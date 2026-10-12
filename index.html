@@ -6,390 +6,110 @@
     <title>YESAMI TEAM VARIEDADES | Catálogo Profesional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ==========================================
-           VARIABLES Y ESTILOS GLOBALES (CORREGIDOS)
-           ========================================== */
         :root { 
-            --rosa: #d63384; 
-            --azul: #0d6efd; 
-            --fondo-app: #f3f4f6;
-            --texto-app: #1f2937;
-            --texto-suave: #6b7280;
-            --tarjeta-app: #ffffff;
-            --borde-app: #e5e7eb;
-            --input-bg: #ffffff;
+            --rosa: #d63384; --azul: #0d6efd;
+            --fondo-app: #f3f4f6; --texto-app: #1f2937;
+            --texto-suave: #6b7280; --tarjeta-app: #ffffff;
+            --borde-app: #e5e7eb; --input-bg: #ffffff;
         }
-
         body.dark-mode {
-            --fondo-app: #1a0b2e;
-            --texto-app: #f3f4f6;
-            --texto-suave: #9ca3af;
-            --tarjeta-app: #2d1b4e;
-            --borde-app: #4c2a7a;
-            --input-bg: #3d2463;
+            --fondo-app: #1a0b2e; --texto-app: #f3f4f6;
+            --texto-suave: #9ca3af; --tarjeta-app: #2d1b4e;
+            --borde-app: #4c2a7a; --input-bg: #3d2463;
         }
-
         * { transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
-
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
-            background-color: var(--fondo-app); 
-            color: var(--texto-app);
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            background-color: var(--fondo-app); color: var(--texto-app);
+            scroll-behavior: smooth; overflow-x: hidden; -webkit-font-smoothing: antialiased;
         }
-
-        /* Textos que respetan el modo */
         .text-app { color: var(--texto-app) !important; }
         .text-suave { color: var(--texto-suave) !important; }
         .card-bg { background-color: var(--tarjeta-app) !important; }
         .header-bg { background-color: var(--tarjeta-app) !important; }
         .border-app { border-color: var(--borde-app) !important; }
         .input-bg { background-color: var(--input-bg) !important; color: var(--texto-app) !important; border-color: var(--borde-app) !important; }
-
-        /* Inputs y formularios en modo oscuro */
         input, textarea, select { color: var(--texto-app); background-color: var(--input-bg); border-color: var(--borde-app); }
         input::placeholder, textarea::placeholder { color: var(--texto-suave); opacity: 0.7; }
         input:focus, textarea:focus, select:focus { outline: none; border-color: var(--rosa); box-shadow: 0 0 0 3px rgba(214, 51, 132, 0.15); }
-
-        /* ==========================================
-           ICONOS ESTILO APPLE (SVG inline con estilo iOS)
-           ========================================== */
-        .ios-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            border-radius: 50%;
-        }
+        .ios-icon { display: inline-flex; align-items: center; justify-content: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border-radius: 50%; }
         .ios-icon:hover { transform: scale(1.1); }
         .ios-icon:active { transform: scale(0.92); }
-
-        .btn-rosa { 
-            background-color: var(--rosa); 
-            color: white; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 14px;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-        }
-        .btn-rosa:hover { 
-            background-color: #b02a6e; 
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 8px 20px rgba(214, 51, 132, 0.35);
-        }
+        .btn-rosa { background-color: var(--rosa); color: white; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 14px; font-weight: 600; letter-spacing: -0.01em; }
+        .btn-rosa:hover { background-color: #b02a6e; transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 20px rgba(214, 51, 132, 0.35); }
         .btn-rosa:active { transform: translateY(0) scale(0.98); }
         .text-rosa { color: var(--rosa); }
 
-        /* ==========================================
-           SPLASH SCREEN PROFESIONAL
-           ========================================== */
-        #splashScreen {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #d63384 0%, #7c3aed 50%, #0d6efd 100%);
-            background-size: 200% 200%;
-            animation: gradientShift 4s ease infinite;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
+        /* SPLASH */
+        #splashScreen { position: fixed; inset: 0; background: linear-gradient(135deg, #d63384 0%, #7c3aed 50%, #0d6efd 100%); background-size: 200% 200%; animation: gradientShift 4s ease infinite; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
         #splashScreen.hidden { opacity: 0; visibility: hidden; }
+        .splash-logo { font-size: 2.8rem; font-weight: 800; color: white; margin-bottom: 2.5rem; text-align: center; letter-spacing: -0.03em; animation: fadeInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1); text-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .cart-animation { position: relative; width: 130px; height: 130px; margin-bottom: 2rem; }
+        .cart-body { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 85px; height: 55px; border: 4px solid white; border-top: none; border-radius: 0 0 12px 12px; animation: cartBounce 1.2s ease-in-out infinite alternate; box-shadow: 0 8px 30px rgba(255,255,255,0.3); }
+        .cart-body::before { content: ''; position: absolute; top: -12px; left: -18px; width: 18px; height: 4px; background: white; border-radius: 2px; }
+        .cart-wheel { position: absolute; bottom: 5px; width: 18px; height: 18px; background: white; border-radius: 50%; animation: wheelSpin 0.9s linear infinite; box-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .cart-wheel.left { left: 15px; } .cart-wheel.right { right: 15px; }
+        .cart-item-fly { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 22px; height: 22px; background: #fbbf24; border-radius: 6px; animation: flyIntoCart 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.5); }
+        .cart-item-fly:nth-child(2) { animation-delay: 0.6s; background: #34d399; }
+        .cart-item-fly:nth-child(3) { animation-delay: 1.2s; background: #f472b6; }
+        @keyframes cartBounce { 0% { transform: translateX(-50%) translateY(0) rotate(0deg); } 100% { transform: translateX(-50%) translateY(-10px) rotate(-2deg); } }
+        @keyframes wheelSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes flyIntoCart { 0% { opacity: 0; top: -50px; transform: translateX(-50%) scale(0.4) rotate(0deg); } 40% { opacity: 1; } 100% { opacity: 0; top: 35px; transform: translateX(-50%) scale(1.1) rotate(360deg); } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        .splash-loading-text { color: white; font-size: 1rem; opacity: 0.9; animation: pulse 1.8s ease-in-out infinite; letter-spacing: 0.05em; font-weight: 500; }
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-        .splash-logo {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: white;
-            margin-bottom: 2.5rem;
-            text-align: center;
-            letter-spacing: -0.03em;
-            animation: fadeInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
-
-        .cart-animation {
-            position: relative;
-            width: 130px;
-            height: 130px;
-            margin-bottom: 2rem;
-        }
-        .cart-body {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 85px;
-            height: 55px;
-            border: 4px solid white;
-            border-top: none;
-            border-radius: 0 0 12px 12px;
-            animation: cartBounce 1.2s ease-in-out infinite alternate;
-            box-shadow: 0 8px 30px rgba(255,255,255,0.3);
-        }
-        .cart-body::before {
-            content: '';
-            position: absolute;
-            top: -12px;
-            left: -18px;
-            width: 18px;
-            height: 4px;
-            background: white;
-            border-radius: 2px;
-        }
-        .cart-wheel {
-            position: absolute;
-            bottom: 5px;
-            width: 18px;
-            height: 18px;
-            background: white;
-            border-radius: 50%;
-            animation: wheelSpin 0.9s linear infinite;
-            box-shadow: 0 0 10px rgba(255,255,255,0.5);
-        }
-        .cart-wheel.left { left: 15px; }
-        .cart-wheel.right { right: 15px; }
-        .cart-item-fly {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 22px;
-            height: 22px;
-            background: #fbbf24;
-            border-radius: 6px;
-            animation: flyIntoCart 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.5);
-        }
-        .cart-item-fly:nth-child(2) { animation-delay: 0.6s; background: #34d399; box-shadow: 0 4px 15px rgba(52, 211, 153, 0.5); }
-        .cart-item-fly:nth-child(3) { animation-delay: 1.2s; background: #f472b6; box-shadow: 0 4px 15px rgba(244, 114, 182, 0.5); }
-
-        @keyframes cartBounce {
-            0% { transform: translateX(-50%) translateY(0) rotate(0deg); }
-            100% { transform: translateX(-50%) translateY(-10px) rotate(-2deg); }
-        }
-        @keyframes wheelSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        @keyframes flyIntoCart {
-            0% { opacity: 0; top: -50px; transform: translateX(-50%) scale(0.4) rotate(0deg); }
-            40% { opacity: 1; }
-            100% { opacity: 0; top: 35px; transform: translateX(-50%) scale(1.1) rotate(360deg); }
-        }
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .splash-loading-text {
-            color: white;
-            font-size: 1rem;
-            opacity: 0.9;
-            animation: pulse 1.8s ease-in-out infinite;
-            letter-spacing: 0.05em;
-            font-weight: 500;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        /* ==========================================
-           SLIDER PROFESIONAL
-           ========================================== */
-        .slider-container {
-            position: relative;
-            width: 100%;
-            height: 280px;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            margin-bottom: 2rem;
-        }
-        .slide {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
-            transform: scale(1.05);
-        }
+        /* SLIDER */
+        .slider-container { position: relative; width: 100%; height: 280px; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.15); margin-bottom: 2rem; }
+        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease-in-out, transform 1s ease-in-out; transform: scale(1.05); }
         .slide.active { opacity: 1; transform: scale(1); }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
-        .slide::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
-        }
-        .slide-text {
-            position: absolute;
-            bottom: 25px;
-            left: 25px;
-            right: 25px;
-            color: white;
-            z-index: 2;
-            animation: fadeInUp 0.8s ease;
-        }
+        .slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%); }
+        .slide-text { position: absolute; bottom: 25px; left: 25px; right: 25px; color: white; z-index: 2; animation: fadeInUp 0.8s ease; }
         .slide-text h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 5px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         .slide-text p { font-size: 0.9rem; opacity: 0.95; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-        
-        .slider-dots {
-            position: absolute;
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 8px;
-            z-index: 3;
-        }
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.5);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+        .slider-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 3; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.3s ease; }
         .dot.active { background: white; width: 24px; border-radius: 4px; }
-
-        .slider-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.25);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 3;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
+        .slider-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 3; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.3); }
         .slider-arrow:hover { background: rgba(255,255,255,0.45); transform: translateY(-50%) scale(1.1); }
-        .slider-arrow.prev { left: 12px; }
-        .slider-arrow.next { right: 12px; }
+        .slider-arrow.prev { left: 12px; } .slider-arrow.next { right: 12px; }
+        @media (max-width: 640px) { .slider-container { height: 200px; border-radius: 16px; } .slide-text h3 { font-size: 1.1rem; } .slide-text p { font-size: 0.8rem; } .slider-arrow { width: 32px; height: 32px; } }
 
-        @media (max-width: 640px) {
-            .slider-container { height: 200px; border-radius: 16px; }
-            .slide-text h3 { font-size: 1.1rem; }
-            .slide-text p { font-size: 0.8rem; }
-            .slider-arrow { width: 32px; height: 32px; }
-        }
-
-        /* ==========================================
-           ANIMACIONES GENERALES
-           ========================================== */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        /* ANIMACIONES */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in { animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-
-        @keyframes slideInRight {
-            from { transform: translateX(100%); }
-            to { transform: translateX(0); }
-        }
+        @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
         .animate-slide-in { animation: slideInRight 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.85); }
-            to { opacity: 1; transform: scale(1); }
-        }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
         .animate-scale-in { animation: scaleIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
 
-        /* Tarjeta producto */
-        .product-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            background: var(--tarjeta-app);
-            border-radius: 16px;
-        }
-        .product-card:hover {
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            transform: translateY(-8px);
-        }
+        .product-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; position: relative; overflow: hidden; background: var(--tarjeta-app); border-radius: 16px; }
+        .product-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.15); transform: translateY(-8px); }
         .product-card .img-container { overflow: hidden; position: relative; height: 180px; }
         .product-card img { transition: transform 0.6s ease; width: 100%; height: 100%; object-fit: cover; }
         .product-card:hover img { transform: scale(1.15); }
-        .product-card .overlay-desc {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
-            color: white; padding: 20px 15px 15px;
-            opacity: 0; transform: translateY(15px);
-            transition: all 0.4s ease; font-size: 0.85rem; line-height: 1.4;
-        }
+        .product-card .overlay-desc { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); color: white; padding: 20px 15px 15px; opacity: 0; transform: translateY(15px); transition: all 0.4s ease; font-size: 0.85rem; line-height: 1.4; }
         .product-card:hover .overlay-desc { opacity: 1; transform: translateY(0); }
-
-        .thumb-img {
-            width: 100%; height: 50px; object-fit: cover;
-            border-radius: 6px; cursor: pointer;
-            border: 2px solid transparent; transition: border 0.2s;
-        }
+        .thumb-img { width: 100%; height: 50px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid transparent; transition: border 0.2s; }
         .thumb-img.active { border-color: var(--rosa); }
 
-        /* Menú lateral */
         .menu-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 40; backdrop-filter: blur(4px); }
         .menu-overlay.active { display: block; }
-        .sidebar { 
-            position: fixed; left: -320px; top: 0; bottom: 0; width: 300px; 
-            background: var(--tarjeta-app); z-index: 50; 
-            transition: left 0.4s cubic-bezier(0.77, 0, 0.175, 1); 
-            box-shadow: 4px 0 30px rgba(0,0,0,0.15); 
-        }
+        .sidebar { position: fixed; left: -320px; top: 0; bottom: 0; width: 300px; background: var(--tarjeta-app); z-index: 50; transition: left 0.4s cubic-bezier(0.77, 0, 0.175, 1); box-shadow: 4px 0 30px rgba(0,0,0,0.15); }
         .sidebar.active { left: 0; }
-
         .cart-item { border-bottom: 1px solid var(--borde-app); padding: 12px 0; animation: fadeInUp 0.3s ease; }
         .badge { background-color: var(--rosa); animation: pulse 2s infinite; }
-
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: var(--rosa); border-radius: 3px; }
-
         .admin-panel { display: none; }
         .admin-panel.active { display: block; }
-
-        /* Animación producto volando */
-        .fly-item {
-            position: fixed; z-index: 9998;
-            width: 60px; height: 60px; border-radius: 12px;
-            object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            pointer-events: none;
-            transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            opacity: 1;
-        }
-        @keyframes cartShake {
-            0%, 100% { transform: scale(1); }
-            25% { transform: scale(1.3) rotate(-10deg); }
-            50% { transform: scale(1.2) rotate(10deg); }
-            75% { transform: scale(1.3) rotate(-5deg); }
-        }
+        .fly-item { position: fixed; z-index: 9998; width: 60px; height: 60px; border-radius: 12px; object-fit: cover; box-shadow: 0 10px 30px rgba(0,0,0,0.3); pointer-events: none; transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94); opacity: 1; }
+        @keyframes cartShake { 0%, 100% { transform: scale(1); } 25% { transform: scale(1.3) rotate(-10deg); } 50% { transform: scale(1.2) rotate(10deg); } 75% { transform: scale(1.3) rotate(-5deg); } }
         .cart-shake { animation: cartShake 0.5s ease; }
-
-        /* Métodos de pago */
-        .metodo-pago {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px 16px; border-radius: 14px;
-            background: var(--input-bg); border: 1px solid var(--borde-app);
-            margin-bottom: 8px; font-size: 0.9rem;
-        }
+        .metodo-pago { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 14px; background: var(--input-bg); border: 1px solid var(--borde-app); margin-bottom: 8px; font-size: 0.9rem; }
         .metodo-pago .icon { font-size: 1.5rem; }
-
-        /* Responsive */
         @media (max-width: 640px) {
             .product-card .img-container { height: 150px; }
             .product-card .overlay-desc { font-size: 0.75rem; padding: 15px 10px 10px; }
@@ -397,13 +117,10 @@
             .cart-animation { width: 100px; height: 100px; }
             .cart-body { width: 65px; height: 40px; }
             .cart-wheel { width: 14px; height: 14px; }
-            .cart-wheel.left { left: 10px; }
-            .cart-wheel.right { right: 10px; }
+            .cart-wheel.left { left: 10px; } .cart-wheel.right { right: 10px; }
             .fly-item { width: 45px; height: 45px; }
         }
-        @media (max-width: 380px) {
-            .product-card .img-container { height: 130px; }
-        }
+        @media (max-width: 380px) { .product-card .img-container { height: 130px; } }
     </style>
 </head>
 <body class="min-h-screen">
@@ -422,39 +139,27 @@
         <p class="splash-loading-text">Cargando los mejores productos...</p>
     </div>
 
-    <!-- HEADER CON ICONOS APPLE -->
+    <!-- HEADER -->
     <header class="header-bg shadow-sm sticky top-0 z-30 border-b border-app">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <button id="menuBtn" class="ios-icon w-10 h-10" style="color: var(--texto-app);" aria-label="Menú">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-                        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-                    </svg>
+                <button id="menuBtn" class="ios-icon w-10 h-10" style="color: var(--texto-app);">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                 </button>
                 <img id="logoHeader" src="" alt="Logo" class="h-10 w-auto object-contain hidden">
                 <h1 id="textoLogo" class="text-xl font-bold text-rosa tracking-tight">YESAMI TEAM</h1>
             </div>
             <div class="flex items-center gap-2">
-                <button id="themeToggle" class="ios-icon w-10 h-10 text-suave" title="Cambiar Tema">
-                    <svg id="iconMoon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                    </svg>
-                    <svg id="iconSun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
-                        <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-                    </svg>
+                <button id="themeToggle" class="ios-icon w-10 h-10 text-suave">
+                    <svg id="iconMoon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <svg id="iconSun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
                 </button>
-                <button id="adminBtn" class="ios-icon w-10 h-10 text-suave" title="Panel Admin">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                    </svg>
+                <button id="adminBtn" class="ios-icon w-10 h-10 text-suave">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                 </button>
                 <div class="relative">
                     <button id="cartBtn" class="ios-icon w-10 h-10 relative" style="color: var(--texto-app);">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                        </svg>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
                     </button>
                     <span id="cartCount" class="absolute -top-1 -right-1 badge text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">0</span>
                 </div>
@@ -462,7 +167,7 @@
         </div>
     </header>
 
-    <!-- MENÚ HAMBURGUESA -->
+    <!-- MENÚ -->
     <div id="menuOverlay" class="menu-overlay"></div>
     <aside id="sidebar" class="sidebar p-6 flex flex-col">
         <div class="flex justify-between items-center mb-8">
@@ -473,24 +178,19 @@
         </div>
         <nav class="space-y-2 flex-1">
             <a href="#" onclick="cerrarMenuYIr(event, 'vistaTienda')" class="flex items-center gap-3 py-3 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium text-app">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                Inicio
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio
             </a>
             <a href="#" onclick="cerrarMenuYIr(event, 'seccionProductos')" class="flex items-center gap-3 py-3 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium text-app">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-                Todos los Productos
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>Todos los Productos
             </a>
             <a href="#" onclick="cerrarMenuYIr(event, 'seccionMejores')" class="flex items-center gap-3 py-3 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium text-app">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                Mejores Productos
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Mejores Productos
             </a>
             <a href="#" onclick="cerrarMenuYIr(event, 'seccionContacto')" class="flex items-center gap-3 py-3 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium text-app">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                Contacto
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Contacto
             </a>
             <button onclick="cerrarMenuYAdmin()" class="w-full flex items-center gap-3 py-3 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium text-suave">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                Panel Admin
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Panel Admin
             </button>
         </nav>
         <div class="mt-6 pt-4 border-t border-app">
@@ -500,17 +200,10 @@
 
     <!-- VISTA PRINCIPAL -->
     <main id="vistaTienda" class="container mx-auto px-4 py-6 max-w-6xl">
-        
-        <!-- SLIDER PROFESIONAL -->
         <div class="slider-container" id="sliderContainer">
-            <!-- Los slides se cargan con JS -->
             <div class="slider-dots" id="sliderDots"></div>
-            <div class="slider-arrow prev" onclick="cambiarSlide(-1)">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-            </div>
-            <div class="slider-arrow next" onclick="cambiarSlide(1)">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-            </div>
+            <div class="slider-arrow prev" onclick="cambiarSlide(-1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></div>
+            <div class="slider-arrow next" onclick="cambiarSlide(1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
         </div>
 
         <div id="seccionMejores" class="mb-8">
@@ -532,7 +225,6 @@
         
         <p id="emptyMsg" class="text-center text-suave py-16 hidden text-lg">No hay productos disponibles.</p>
 
-        <!-- SECCIÓN CONTACTO -->
         <div id="seccionContacto" class="mt-12 card-bg rounded-2xl shadow-md p-6 border border-app">
             <h3 class="text-2xl font-bold mb-6 text-center text-app flex items-center justify-center gap-2">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d63384" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -543,46 +235,32 @@
                     <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #25D366, #128C7E);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                     </div>
-                    <div>
-                        <p class="text-sm text-suave">WhatsApp</p>
-                        <p id="contactoWhatsApp" class="font-bold text-app">Cargando...</p>
-                    </div>
+                    <div><p class="text-sm text-suave">WhatsApp</p><p id="contactoWhatsApp" class="font-bold text-app">Cargando...</p></div>
                 </div>
                 <div class="flex items-center gap-4 p-4 rounded-xl" style="background: var(--input-bg);">
                     <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #d63384, #7c3aed);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
                     </div>
-                    <div>
-                        <p class="text-sm text-suave">Email</p>
-                        <p id="contactoEmail" class="font-bold text-app">Cargando...</p>
-                    </div>
+                    <div><p class="text-sm text-suave">Email</p><p id="contactoEmail" class="font-bold text-app">Cargando...</p></div>
                 </div>
                 <div class="flex items-center gap-4 p-4 rounded-xl" style="background: var(--input-bg);">
                     <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #0d6efd, #06b6d4);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                     </div>
-                    <div>
-                        <p class="text-sm text-suave">Teléfono</p>
-                        <p id="contactoTelefono" class="font-bold text-app">Cargando...</p>
-                    </div>
+                    <div><p class="text-sm text-suave">Teléfono</p><p id="contactoTelefono" class="font-bold text-app">Cargando...</p></div>
                 </div>
                 <div class="flex items-center gap-4 p-4 rounded-xl" style="background: var(--input-bg);">
                     <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                     </div>
-                    <div>
-                        <p class="text-sm text-suave">Ubicación</p>
-                        <p id="contactoUbicacion" class="font-bold text-app">Cargando...</p>
-                    </div>
+                    <div><p class="text-sm text-suave">Ubicación</p><p id="contactoUbicacion" class="font-bold text-app">Cargando...</p></div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- VISTA PANEL ADMIN -->
+    <!-- VISTA ADMIN -->
     <main id="vistaAdmin" class="admin-panel container mx-auto px-4 py-6 max-w-5xl">
-
-        <!-- LOGIN ADMIN -->
         <div id="adminLogin" class="card-bg rounded-2xl shadow-md p-8 max-w-md mx-auto mt-10 border border-app">
             <div class="text-center mb-6">
                 <div class="w-16 h-16 rounded-full mx-auto mb-3 flex items-center justify-center" style="background: linear-gradient(135deg, #d63384, #7c3aed);">
@@ -597,7 +275,6 @@
             <button onclick="toggleAdmin()" class="w-full text-center text-sm text-suave mt-4 hover:text-rosa transition">← Volver a la Tienda</button>
         </div>
 
-        <!-- CONTENIDO ADMIN -->
         <div id="adminContenido" class="hidden">
             <div class="card-bg rounded-2xl shadow-md p-6 mb-6 border border-app">
                 <div class="flex justify-between items-center mb-6">
@@ -608,138 +285,78 @@
                     </div>
                 </div>
 
-                <!-- CONFIGURACIÓN GENERAL -->
                 <div class="bg-gray-50 dark:bg-gray-800 p-5 rounded-xl mb-6 border border-app">
                     <h3 class="font-bold text-lg mb-4 text-app">🎨 Configuración General</h3>
-                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Logo -->
                         <div>
                             <label class="block text-sm font-medium mb-1 text-app">🖼️ Logo de la Tienda</label>
                             <input type="file" id="logoUpload" accept="image/*" class="w-full text-sm input-bg p-2 rounded-lg">
                             <button onclick="borrarLogo()" class="text-red-500 text-xs font-bold hover:underline mt-1">Eliminar logo</button>
                         </div>
-
-                        <!-- Nombre del Vendedor -->
                         <div>
                             <label class="block text-sm font-medium mb-1 text-app">👤 Tu Nombre (para WhatsApp)</label>
                             <input type="text" id="adminNombre" placeholder="Ej: Robert" class="w-full p-2 rounded-lg border input-bg text-app">
                         </div>
-
-                        <!-- Contraseña Admin -->
                         <div>
                             <label class="block text-sm font-medium mb-1 text-app">🔐 Contraseña del Panel</label>
                             <input type="text" id="adminNuevaPassword" placeholder="Nueva contraseña" class="w-full p-2 rounded-lg border input-bg text-app">
                         </div>
-
-                        <!-- Tasa de Cambio -->
                         <div>
                             <label class="block text-sm font-medium mb-1 text-app">💱 Tasa de Cambio (1 USD = ?)</label>
                             <input type="number" id="adminTasa" step="0.01" placeholder="Ej: 40.00" class="w-full p-2 rounded-lg border input-bg text-app">
                         </div>
                     </div>
-
-                    <!-- WhatsApp -->
                     <div class="mt-4">
                         <label class="block text-sm font-medium mb-1 text-app">📱 Número de WhatsApp (con código de país, sin +)</label>
                         <input type="text" id="adminWhatsApp" placeholder="Ej: 584241234567" class="w-full p-2 rounded-lg border input-bg text-app">
                     </div>
-
-                    <!-- Datos de Contacto -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                        <div>
-                            <label class="block text-sm font-medium mb-1 text-app">📧 Email</label>
-                            <input type="email" id="adminEmail" placeholder="correo@ejemplo.com" class="w-full p-2 rounded-lg border input-bg text-app">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-1 text-app">☎️ Teléfono</label>
-                            <input type="text" id="adminTelefono" placeholder="+58 424-1234567" class="w-full p-2 rounded-lg border input-bg text-app">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium mb-1 text-app">📍 Ubicación</label>
-                            <input type="text" id="adminUbicacion" placeholder="Ciudad, País" class="w-full p-2 rounded-lg border input-bg text-app">
-                        </div>
+                        <div><label class="block text-sm font-medium mb-1 text-app">📧 Email</label><input type="email" id="adminEmail" placeholder="correo@ejemplo.com" class="w-full p-2 rounded-lg border input-bg text-app"></div>
+                        <div><label class="block text-sm font-medium mb-1 text-app">☎️ Teléfono</label><input type="text" id="adminTelefono" placeholder="+58 424-1234567" class="w-full p-2 rounded-lg border input-bg text-app"></div>
+                        <div><label class="block text-sm font-medium mb-1 text-app">📍 Ubicación</label><input type="text" id="adminUbicacion" placeholder="Ciudad, País" class="w-full p-2 rounded-lg border input-bg text-app"></div>
                     </div>
-
-                    <!-- Métodos de Pago -->
                     <div class="mt-4">
                         <label class="block text-sm font-medium mb-2 text-app">💳 Métodos de Pago (uno por línea)</label>
                         <textarea id="adminMetodosPago" rows="4" placeholder="Divisa&#10;Efectivo&#10;Pago Móvil&#10;Transferencia" class="w-full p-2 rounded-lg border input-bg text-app"></textarea>
                     </div>
-
-                    <!-- Datos de Pago -->
                     <div class="mt-4">
                         <label class="block text-sm font-medium mb-2 text-app">🏦 Datos para Pagos</label>
                         <textarea id="adminDatosPago" rows="4" placeholder="Banco: Banesco&#10;Cuenta: 0134-XXXX-XX-XXXXXXXXXX&#10;Titular: Robert Pérez&#10;Pago Móvil: 0424-1234567" class="w-full p-2 rounded-lg border input-bg text-app"></textarea>
                     </div>
-
                     <button onclick="guardarConfiguracion()" class="btn-rosa px-6 py-3 rounded-xl font-bold mt-4 w-full md:w-auto">💾 Guardar Configuración</button>
                 </div>
 
-                <!-- SLIDER ADMIN -->
                 <div class="bg-gray-50 dark:bg-gray-800 p-5 rounded-xl mb-6 border border-app">
                     <h3 class="font-bold text-lg mb-4 text-app">🖼️ Slider Principal (4 imágenes)</h3>
-                    <p class="text-xs text-suave mb-3">Sube 4 imágenes para el slider de inicio. Puedes añadir un título y subtítulo a cada una.</p>
-                    
-                    <div id="sliderAdmin" class="space-y-3">
-                        <!-- Se generan 4 bloques de slider -->
-                    </div>
+                    <p class="text-xs text-suave mb-3">Sube 4 imágenes para el slider de inicio. Recomendado: menos de 500 KB cada una.</p>
+                    <div id="sliderAdmin" class="space-y-3"></div>
                 </div>
 
-                <!-- FORMULARIO PRODUCTO -->
                 <form id="productForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 bg-gray-50 dark:bg-gray-800 p-5 rounded-xl border border-app">
                     <h3 class="font-bold text-lg mb-2 text-app md:col-span-2">📦 Agregar / Editar Producto</h3>
                     <input type="hidden" id="productoId">
-                    
-                    <div class="md:col-span-1">
-                        <label class="block text-sm font-medium mb-1 text-app">Nombre *</label>
-                        <input type="text" id="nombre" required class="w-full p-2 border rounded-lg input-bg text-app">
-                    </div>
-                    
-                    <div class="md:col-span-1">
-                        <label class="block text-sm font-medium mb-1 text-app">Precio en $ *</label>
-                        <input type="number" id="precio" step="0.01" required class="w-full p-2 border rounded-lg input-bg text-app">
-                    </div>
-
-                    <div class="md:col-span-1">
-                        <label class="block text-sm font-medium mb-1 text-app">Stock *</label>
-                        <input type="number" id="stock" required class="w-full p-2 border rounded-lg input-bg text-app">
-                    </div>
-
-                    <div class="md:col-span-1">
-                        <label class="block text-sm font-medium mb-1 text-app">Categoría</label>
-                        <input type="text" id="categoria" placeholder="Ej: Collares" class="w-full p-2 border rounded-lg input-bg text-app">
-                    </div>
-
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium mb-1 text-app">Descripción *</label>
-                        <textarea id="descripcion" rows="3" required class="w-full p-2 border rounded-lg input-bg text-app"></textarea>
-                    </div>
-
+                    <div class="md:col-span-1"><label class="block text-sm font-medium mb-1 text-app">Nombre *</label><input type="text" id="nombre" required class="w-full p-2 border rounded-lg input-bg text-app"></div>
+                    <div class="md:col-span-1"><label class="block text-sm font-medium mb-1 text-app">Precio en $ *</label><input type="number" id="precio" step="0.01" required class="w-full p-2 border rounded-lg input-bg text-app"></div>
+                    <div class="md:col-span-1"><label class="block text-sm font-medium mb-1 text-app">Stock *</label><input type="number" id="stock" required class="w-full p-2 border rounded-lg input-bg text-app"></div>
+                    <div class="md:col-span-1"><label class="block text-sm font-medium mb-1 text-app">Categoría</label><input type="text" id="categoria" placeholder="Ej: Collares" class="w-full p-2 border rounded-lg input-bg text-app"></div>
+                    <div class="md:col-span-2"><label class="block text-sm font-medium mb-1 text-app">Descripción *</label><textarea id="descripcion" rows="3" required class="w-full p-2 border rounded-lg input-bg text-app"></textarea></div>
                     <div class="md:col-span-2">
                         <label class="block text-sm font-medium mb-1 text-app">Fotos (Máximo 3) *</label>
                         <input type="file" id="fotosInput" accept="image/*" multiple class="w-full text-sm input-bg p-2 rounded-lg">
+                        <p class="text-xs text-suave mt-1">💡 Las imágenes se comprimen automáticamente. Máx 300 KB por foto.</p>
                         <div id="previewFotos" class="flex gap-2 mt-2 flex-wrap"></div>
                     </div>
-
                     <div class="md:col-span-2 flex flex-wrap gap-2">
                         <button type="submit" class="btn-rosa px-6 py-3 rounded-xl font-bold">💾 Guardar</button>
                         <button type="button" onclick="limpiarFormulario()" class="bg-gray-300 dark:bg-gray-600 px-6 py-3 rounded-xl font-bold hover:bg-gray-400 transition text-app">Limpiar</button>
                     </div>
                 </form>
 
-                <!-- TABLA PRODUCTOS -->
                 <h3 class="font-bold text-lg mb-3 text-app">📋 Lista de Productos</h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
                         <thead class="bg-gray-100 dark:bg-gray-700 text-suave uppercase text-xs">
-                            <tr>
-                                <th class="p-3">Imagen</th>
-                                <th class="p-3">Nombre</th>
-                                <th class="p-3">Precio</th>
-                                <th class="p-3">Stock</th>
-                                <th class="p-3">Acciones</th>
-                            </tr>
+                            <tr><th class="p-3">Imagen</th><th class="p-3">Nombre</th><th class="p-3">Precio</th><th class="p-3">Stock</th><th class="p-3">Acciones</th></tr>
                         </thead>
                         <tbody id="tablaProductos" class="text-app"></tbody>
                     </table>
@@ -748,23 +365,16 @@
         </div>
     </main>
 
-    <!-- CARRITO LATERAL -->
+    <!-- CARRITO -->
     <div id="cartModal" class="fixed inset-0 bg-black/50 hidden z-50 backdrop-blur-sm">
         <div class="absolute right-0 top-0 bottom-0 w-full max-w-md card-bg p-6 shadow-2xl overflow-y-auto animate-slide-in flex flex-col">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-2xl font-bold text-app">Tu Carrito 🛒</h3>
-                <button id="closeCart" class="ios-icon w-9 h-9 text-suave">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </button>
+                <button id="closeCart" class="ios-icon w-9 h-9 text-suave"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
-            
             <div id="cartItems" class="space-y-2 flex-1"></div>
-            
             <div class="border-t border-app pt-4 mt-4">
-                <div class="flex justify-between font-bold text-xl mb-4 text-app">
-                    <span>Total:</span>
-                    <span id="cartTotal" class="text-rosa">$0.00</span>
-                </div>
+                <div class="flex justify-between font-bold text-xl mb-4 text-app"><span>Total:</span><span id="cartTotal" class="text-rosa">$0.00</span></div>
                 <div id="cartTotalBs" class="text-right text-sm text-suave mb-4"></div>
                 <button id="sendWhatsApp" class="w-full btn-rosa py-3 rounded-xl font-bold text-lg shadow-lg">📲 Enviar Pedido por WhatsApp</button>
                 <button id="clearCart" class="w-full text-center text-sm text-suave mt-3 hover:text-red-500 transition">Vaciar Carrito</button>
@@ -778,9 +388,7 @@
             <div class="p-6">
                 <div class="flex justify-between items-start mb-4">
                     <h3 id="detailNombre" class="text-2xl font-bold text-rosa"></h3>
-                    <button onclick="cerrarDetalle()" class="ios-icon w-9 h-9 text-suave">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                    </button>
+                    <button onclick="cerrarDetalle()" class="ios-icon w-9 h-9 text-suave"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -818,7 +426,7 @@
         </div>
     </div>
 
-    <!-- MODAL MÉTODOS DE PAGO -->
+    <!-- MODAL PAGO -->
     <div id="pagoModal" class="fixed inset-0 bg-black/60 hidden z-[70] backdrop-blur-sm flex items-center justify-center p-4">
         <div class="card-bg rounded-2xl max-w-md w-full shadow-2xl animate-scale-in overflow-hidden max-h-[90vh] overflow-y-auto">
             <div class="bg-gradient-to-r from-[#d63384] to-[#7c3aed] p-5 text-center">
@@ -836,34 +444,49 @@
         </div>
     </div>
 
+    <!-- ==========================================
+         FIREBASE SDK (solo Firestore, sin Storage)
+         ========================================== -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
     <script>
         // ==========================================
-        // CONFIGURACIÓN
+        // ⚠️ CONFIGURACIÓN DE FIREBASE
         // ==========================================
-        const STORAGE_KEY = 'yesami_productos';
-        const LOGO_KEY = 'yesami_logo';
-        const CART_KEY = 'yesami_carrito';
-        const THEME_KEY = 'yesami_tema';
-        const CONFIG_KEY = 'yesami_config';
-        const SLIDER_KEY = 'yesami_slider';
+        const firebaseConfig = {
+           apiKey: "AIzaSyBokydFam6HBdC3JVE87ZahMHBz9b6wkMQ",
+           authDomain: "yesamiteamvariedades.firebaseapp.com",
+           projectId: "yesamiteamvariedades",
+           storageBucket: "yesamiteamvariedades.firebasestorage.app",
+           messagingSenderId: "795051875915",
+           appId: "1:795051875915:web:caa2cfdf74e204e249b7ce"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const productosRef = db.collection('productos');
+        const configRef = db.collection('config').doc('general');
+        const sliderRef = db.collection('slider');
+
+        // ==========================================
+        // CONSTANTES
+        // ==========================================
         const ADMIN_PASS_KEY = 'yesami_admin_pass';
         const ADMIN_SESSION_KEY = 'yesami_admin_session';
-
         const DEFAULT_PASSWORD = "yesami2026";
 
-        let carrito = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+        let carrito = JSON.parse(localStorage.getItem('yesami_carrito')) || [];
         let fotosTemporales = [];
-        let config = JSON.parse(localStorage.getItem(CONFIG_KEY)) || {
-            nombre: 'Robert',
-            whatsapp: '1234567890',
-            email: 'contacto@yesamiteam.com',
-            telefono: '+58 424-1234567',
-            ubicacion: 'Venezuela',
-            tasa: 40.00,
+        let window_productosActuales = [];
+        let config = {
+            nombre: 'Robert', whatsapp: '1234567890',
+            email: 'contacto@yesamiteam.com', telefono: '+58 424-1234567',
+            ubicacion: 'Venezuela', tasa: 40.00,
             metodosPago: ['Divisa', 'Efectivo', 'Pago Móvil', 'Transferencia'],
             datosPago: 'Banco: Banesco\nCuenta: 0134-XXXX-XX-XXXXXXXXXX\nTitular: Robert Pérez\nPago Móvil: 0424-1234567'
         };
-        let sliderData = JSON.parse(localStorage.getItem(SLIDER_KEY)) || [
+        let sliderData = [
             { img: '', titulo: 'Bienvenido a YESAMI TEAM', subtitulo: 'Los mejores accesorios para ti' },
             { img: '', titulo: 'Nuevos Productos', subtitulo: 'Descubre nuestras novedades' },
             { img: '', titulo: 'Calidad Garantizada', subtitulo: 'Productos seleccionados para ti' },
@@ -871,49 +494,143 @@
         ];
         let slideActual = 0;
         let sliderInterval;
+        let productosListener = null;
 
-        const productosEjemplo = [
-            { id: 'p1', nombre: 'Collar Estrella', precio: 12.50, stock: 15, categoria: 'Collares', descripcion: 'Hermoso collar con dije de estrella en acero inoxidable.', imagenes: ['https://via.placeholder.com/600x600/d63384/ffffff?text=Collar+1', 'https://via.placeholder.com/600x600/0d6efd/ffffff?text=Collar+2', 'https://via.placeholder.com/600x600/f59e0b/ffffff?text=Collar+3'] },
-            { id: 'p2', nombre: 'Aretes Corazón', precio: 8.00, stock: 20, categoria: 'Aretes', descripcion: 'Aretes con forma de corazón, perfectos para regalar.', imagenes: ['https://via.placeholder.com/600x600/0d6efd/ffffff?text=Aretes+1', 'https://via.placeholder.com/600x600/d63384/ffffff?text=Aretes+2', 'https://via.placeholder.com/600x600/10b981/ffffff?text=Aretes+3'] },
-            { id: 'p3', nombre: 'Pulsera Perlas', precio: 15.00, stock: 10, categoria: 'Pulseras', descripcion: 'Pulsera elegante con perlas naturales.', imagenes: ['https://via.placeholder.com/600x600/d63384/ffffff?text=Pulsera+1', 'https://via.placeholder.com/600x600/0d6efd/ffffff?text=Pulsera+2', 'https://via.placeholder.com/600x600/8b5cf6/ffffff?text=Pulsera+3'] },
-            { id: 'p4', nombre: 'Set Anillos', precio: 20.00, stock: 8, categoria: 'Anillos', descripcion: 'Set de 5 anillos ajustables minimalistas.', imagenes: ['https://via.placeholder.com/600x600/0d6efd/ffffff?text=Anillos+1', 'https://via.placeholder.com/600x600/d63384/ffffff?text=Anillos+2', 'https://via.placeholder.com/600x600/f59e0b/ffffff?text=Anillos+3'] }
-        ];
+        // ==========================================
+        // COMPRESIÓN DE IMÁGENES A BASE64
+        // ==========================================
+        function comprimirImagen(file, maxAncho = 800, calidad = 0.75) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let ancho = img.width;
+                        let alto = img.height;
+                        if (ancho > maxAncho) {
+                            alto = (maxAncho / ancho) * alto;
+                            ancho = maxAncho;
+                        }
+                        canvas.width = ancho;
+                        canvas.height = alto;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, ancho, alto);
+                        const base64 = canvas.toDataURL('image/jpeg', calidad);
+                        resolve(base64);
+                    };
+                    img.onerror = reject;
+                    img.src = e.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
 
         // ==========================================
         // INICIALIZACIÓN
         // ==========================================
-        function init() {
-            // Tema
-            const temaGuardado = localStorage.getItem(THEME_KEY);
+        async function init() {
+            const temaGuardado = localStorage.getItem('yesami_tema');
             if (temaGuardado === 'dark') {
                 document.body.classList.add('dark-mode');
                 document.getElementById('iconMoon').classList.add('hidden');
                 document.getElementById('iconSun').classList.remove('hidden');
             }
 
-            // Contraseña admin
             if (!localStorage.getItem(ADMIN_PASS_KEY)) {
                 localStorage.setItem(ADMIN_PASS_KEY, DEFAULT_PASSWORD);
             }
 
-            if (!localStorage.getItem(STORAGE_KEY)) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(productosEjemplo));
-            }
-
             cargarLogo();
-            cargarConfigEnFormulario();
-            renderizarProductos();
-            renderizarMejoresProductos();
             actualizarInterfazCarrito();
-            renderizarSlider();
-            renderizarSliderAdmin();
-            actualizarContacto();
             configurarEventos();
             iniciarAutoplaySlider();
 
+            // Cargar datos desde Firestore
+            await cargarConfigDesdeFirestore();
+            await cargarSliderDesdeFirestore();
+            iniciarListenerProductos();
+
             setTimeout(() => {
                 document.getElementById('splashScreen').classList.add('hidden');
-            }, 2800);
+            }, 2500);
+        }
+
+        // ==========================================
+        // FIRESTORE: CONFIG
+        // ==========================================
+        async function cargarConfigDesdeFirestore() {
+            try {
+                const doc = await configRef.get();
+                if (doc.exists) {
+                    config = { ...config, ...doc.data() };
+                } else {
+                    await configRef.set(config);
+                }
+                cargarConfigEnFormulario();
+                actualizarContacto();
+            } catch (e) {
+                console.warn('Usando config local:', e);
+                actualizarContacto();
+            }
+        }
+
+        async function guardarConfigEnFirestore() {
+            try { await configRef.set(config); return true; }
+            catch (e) { console.error(e); return false; }
+        }
+
+        // ==========================================
+        // FIRESTORE: SLIDER
+        // ==========================================
+        async function cargarSliderDesdeFirestore() {
+            try {
+                const snapshot = await sliderRef.orderBy('orden').get();
+                if (!snapshot.empty) {
+                    sliderData = [];
+                    snapshot.forEach(doc => sliderData.push({ id: doc.id, ...doc.data() }));
+                } else {
+                    for (let i = 0; i < sliderData.length; i++) {
+                        await sliderRef.add({ ...sliderData[i], orden: i });
+                    }
+                }
+                renderizarSlider();
+                renderizarSliderAdmin();
+            } catch (e) {
+                console.warn('Usando slider local:', e);
+                renderizarSlider();
+                renderizarSliderAdmin();
+            }
+        }
+
+        async function guardarSliderEnFirestore() {
+            try {
+                const snapshot = await sliderRef.get();
+                const batch = db.batch();
+                snapshot.forEach(doc => batch.delete(doc.ref));
+                sliderData.forEach((slide, index) => {
+                    const ref = sliderRef.doc();
+                    batch.set(ref, { ...slide, orden: index });
+                });
+                await batch.commit();
+                return true;
+            } catch (e) { console.error(e); return false; }
+        }
+
+        // ==========================================
+        // FIRESTORE: PRODUCTOS EN TIEMPO REAL
+        // ==========================================
+        function iniciarListenerProductos() {
+            if (productosListener) productosListener();
+            productosListener = productosRef.onSnapshot(snapshot => {
+                const productos = [];
+                snapshot.forEach(doc => productos.push({ id: doc.id, ...doc.data() }));
+                window_productosActuales = productos;
+                renderizarProductos(productos);
+                renderizarMejoresProductos(productos);
+                renderizarTablaAdmin(productos);
+            }, error => console.warn('Error listener:', error));
         }
 
         // ==========================================
@@ -931,31 +648,20 @@
         // ==========================================
         function renderizarSlider() {
             const container = document.getElementById('sliderContainer');
-            // Eliminar slides previos pero mantener dots y arrows
             container.querySelectorAll('.slide').forEach(s => s.remove());
-            
             const dots = document.getElementById('sliderDots');
             dots.innerHTML = '';
-
             sliderData.forEach((slide, index) => {
                 const div = document.createElement('div');
                 div.className = `slide ${index === 0 ? 'active' : ''}`;
                 const imgSrc = slide.img || 'https://via.placeholder.com/1200x400/d63384/ffffff?text=YESAMI+TEAM';
-                div.innerHTML = `
-                    <img src="${imgSrc}" alt="${slide.titulo}">
-                    <div class="slide-text">
-                        <h3>${slide.titulo || ''}</h3>
-                        <p>${slide.subtitulo || ''}</p>
-                    </div>
-                `;
+                div.innerHTML = `<img src="${imgSrc}" alt="${slide.titulo}"><div class="slide-text"><h3>${slide.titulo || ''}</h3><p>${slide.subtitulo || ''}</p></div>`;
                 container.insertBefore(div, container.firstChild);
-
                 const dot = document.createElement('div');
                 dot.className = `dot ${index === 0 ? 'active' : ''}`;
                 dot.onclick = () => irASlide(index);
                 dots.appendChild(dot);
             });
-
             slideActual = 0;
         }
 
@@ -995,62 +701,45 @@
                         <input type="file" accept="image/*" onchange="subirImagenSlider(event, ${index})" class="w-full text-xs input-bg p-2 rounded-lg">
                         ${slide.img ? `<img src="${slide.img}" class="w-full h-16 object-cover rounded mt-2">` : ''}
                     </div>
-                    <div>
-                        <label class="block text-xs font-medium mb-1 text-app">Título</label>
-                        <input type="text" value="${slide.titulo || ''}" onchange="actualizarSlider(${index}, 'titulo', this.value)" class="w-full p-2 text-sm rounded-lg border input-bg text-app">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-medium mb-1 text-app">Subtítulo</label>
-                        <input type="text" value="${slide.subtitulo || ''}" onchange="actualizarSlider(${index}, 'subtitulo', this.value)" class="w-full p-2 text-sm rounded-lg border input-bg text-app">
-                    </div>
+                    <div><label class="block text-xs font-medium mb-1 text-app">Título</label><input type="text" value="${slide.titulo || ''}" onchange="actualizarSlider(${index}, 'titulo', this.value)" class="w-full p-2 text-sm rounded-lg border input-bg text-app"></div>
+                    <div><label class="block text-xs font-medium mb-1 text-app">Subtítulo</label><input type="text" value="${slide.subtitulo || ''}" onchange="actualizarSlider(${index}, 'subtitulo', this.value)" class="w-full p-2 text-sm rounded-lg border input-bg text-app"></div>
                 `;
                 container.appendChild(div);
             });
         }
 
-        function subirImagenSlider(event, index) {
+        async function subirImagenSlider(event, index) {
             const file = event.target.files[0];
             if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                sliderData[index].img = e.target.result;
-                localStorage.setItem(SLIDER_KEY, JSON.stringify(sliderData));
-                renderizarSliderAdmin();
-                renderizarSlider();
-                iniciarAutoplaySlider();
-            };
-            reader.readAsDataURL(file);
+            if (file.size > 2 * 1024 * 1024) {
+                alert('La imagen es muy grande. Máximo 2 MB.');
+                return;
+            }
+            const base64 = await comprimirImagen(file, 1200, 0.7);
+            sliderData[index].img = base64;
+            await guardarSliderEnFirestore();
+            renderizarSliderAdmin();
+            renderizarSlider();
+            iniciarAutoplaySlider();
         }
 
-        function actualizarSlider(index, campo, valor) {
+        async function actualizarSlider(index, campo, valor) {
             sliderData[index][campo] = valor;
-            localStorage.setItem(SLIDER_KEY, JSON.stringify(sliderData));
+            await guardarSliderEnFirestore();
             renderizarSlider();
         }
 
         // ==========================================
         // PRODUCTOS
         // ==========================================
-        function obtenerProductos() {
-            return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-        }
-
-        function guardarProductos(productos) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(productos));
-        }
-
-        function renderizarProductos(filtro = '') {
+        function renderizarProductos(productos, filtro = '') {
             const grid = document.getElementById('productGrid');
             const emptyMsg = document.getElementById('emptyMsg');
-            const productos = obtenerProductos();
-            
             const filtrados = productos.filter(p => 
-                p.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
+                (p.nombre || '').toLowerCase().includes(filtro.toLowerCase()) ||
                 (p.categoria && p.categoria.toLowerCase().includes(filtro.toLowerCase()))
             );
-
             grid.innerHTML = '';
-            
             if (filtrados.length === 0) {
                 emptyMsg.classList.remove('hidden');
                 return;
@@ -1059,15 +748,15 @@
             filtrados.forEach(p => grid.appendChild(crearTarjetaProducto(p)));
         }
 
-        function renderizarMejoresProductos() {
+        function renderizarMejoresProductos(productos) {
             const grid = document.getElementById('mejoresProductos');
-            const productos = obtenerProductos().filter(p => p.stock > 0).slice(0, 4);
+            const destacados = productos.filter(p => p.stock > 0).slice(0, 4);
             grid.innerHTML = '';
-            if (productos.length === 0) {
+            if (destacados.length === 0) {
                 grid.innerHTML = '<p class="text-suave col-span-full text-center py-4">No hay productos destacados.</p>';
                 return;
             }
-            productos.forEach(p => grid.appendChild(crearTarjetaProducto(p)));
+            destacados.forEach(p => grid.appendChild(crearTarjetaProducto(p)));
         }
 
         function crearTarjetaProducto(p) {
@@ -1077,11 +766,8 @@
             div.className = 'product-card animate-fade-in';
             div.innerHTML = `
                 <div class="img-container">
-                    <img src="${imgPrincipal}" alt="${p.nombre}">
-                    <div class="overlay-desc">
-                        <p class="font-bold mb-1">${p.nombre}</p>
-                        <p class="opacity-90 line-clamp-3">${p.descripcion || ''}</p>
-                    </div>
+                    <img src="${imgPrincipal}" alt="${p.nombre}" loading="lazy">
+                    <div class="overlay-desc"><p class="font-bold mb-1">${p.nombre}</p><p class="opacity-90 line-clamp-3">${p.descripcion || ''}</p></div>
                 </div>
                 <div class="p-3 md:p-4">
                     <h4 class="font-bold text-xs md:text-sm leading-tight mb-1 line-clamp-2 text-app">${p.nombre}</h4>
@@ -1092,17 +778,14 @@
                     <button class="btn-add w-full btn-rosa py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-medium">Añadir</button>
                 </div>
             `;
-            
             div.addEventListener('click', (e) => {
                 if (!e.target.classList.contains('btn-add')) abrirDetalle(p.id);
             });
-
             div.querySelector('.btn-add').addEventListener('click', (e) => {
                 e.stopPropagation();
                 const imgEl = div.querySelector('.img-container img');
                 animarProductoAlCarrito(imgEl, p);
             });
-
             return div;
         }
 
@@ -1113,16 +796,13 @@
             const cartBtn = document.getElementById('cartBtn');
             const imgRect = imgEl.getBoundingClientRect();
             const cartRect = cartBtn.getBoundingClientRect();
-
             const fly = document.createElement('img');
             fly.src = producto.imagenes && producto.imagenes.length > 0 ? producto.imagenes[0] : imgEl.src;
             fly.className = 'fly-item';
             fly.style.left = `${imgRect.left + imgRect.width / 2 - 30}px`;
             fly.style.top = `${imgRect.top + imgRect.height / 2 - 30}px`;
             document.body.appendChild(fly);
-
             void fly.offsetWidth;
-
             requestAnimationFrame(() => {
                 fly.style.left = `${cartRect.left + cartRect.width / 2 - 15}px`;
                 fly.style.top = `${cartRect.top + cartRect.height / 2 - 15}px`;
@@ -1131,7 +811,6 @@
                 fly.style.opacity = '0.5';
                 fly.style.transform = 'rotate(360deg) scale(0.3)';
             });
-
             setTimeout(() => {
                 fly.remove();
                 agregarAlCarrito(producto.id, producto);
@@ -1146,10 +825,7 @@
             const img = producto.imagenes && producto.imagenes.length > 0 ? producto.imagenes[0] : '';
             info.innerHTML = `
                 ${img ? `<img src="${img}" class="w-16 h-16 object-cover rounded-lg">` : ''}
-                <div>
-                    <p class="font-bold text-sm text-app">${producto.nombre}</p>
-                    <p class="text-rosa font-bold">$${producto.precio.toFixed(2)}</p>
-                </div>
+                <div><p class="font-bold text-sm text-app">${producto.nombre}</p><p class="text-rosa font-bold">$${producto.precio.toFixed(2)}</p></div>
             `;
             document.getElementById('confirmModal').classList.remove('hidden');
         }
@@ -1158,18 +834,15 @@
         // DETALLE PRODUCTO
         // ==========================================
         function abrirDetalle(id) {
-            const producto = obtenerProductos().find(p => p.id === id);
+            const producto = window_productosActuales.find(p => p.id === id);
             if (!producto) return;
-
             document.getElementById('detailNombre').textContent = producto.nombre;
             document.getElementById('detailPrecio').textContent = `$${producto.precio.toFixed(2)}`;
             document.getElementById('detailPrecioBs').textContent = `Bs. ${(producto.precio * config.tasa).toFixed(2)}`;
             document.getElementById('detailStock').textContent = `Unidades disponibles: ${producto.stock}`;
             document.getElementById('detailDescripcion').textContent = producto.descripcion || 'Sin descripción';
-            
             const imgPrincipal = producto.imagenes && producto.imagenes.length > 0 ? producto.imagenes[0] : 'https://via.placeholder.com/600x600/cccccc/ffffff?text=Sin+Imagen';
             document.getElementById('detailImagenPrincipal').src = imgPrincipal;
-
             const miniaturasDiv = document.getElementById('detailMiniaturas');
             miniaturasDiv.innerHTML = '';
             if (producto.imagenes && producto.imagenes.length > 0) {
@@ -1185,13 +858,11 @@
                     miniaturasDiv.appendChild(thumb);
                 });
             }
-
             document.getElementById('detailAddBtn').onclick = () => {
                 const imgEl = document.getElementById('detailImagenPrincipal');
                 animarProductoAlCarrito(imgEl, producto);
                 cerrarDetalle();
             };
-
             document.getElementById('detailModal').classList.remove('hidden');
         }
 
@@ -1203,14 +874,13 @@
         // CARRITO
         // ==========================================
         function guardarCarrito() {
-            localStorage.setItem(CART_KEY, JSON.stringify(carrito));
+            localStorage.setItem('yesami_carrito', JSON.stringify(carrito));
             actualizarInterfazCarrito();
         }
 
         function agregarAlCarrito(id, productoData = null) {
-            const producto = productoData || obtenerProductos().find(p => p.id === id);
+            const producto = productoData || window_productosActuales.find(p => p.id === id);
             if (!producto) return;
-            
             const existente = carrito.find(item => item.id === id);
             if (existente) {
                 if (existente.cantidad < producto.stock) existente.cantidad++;
@@ -1244,10 +914,8 @@
         function actualizarInterfazCarrito() {
             const totalItems = carrito.reduce((sum, item) => sum + item.cantidad, 0);
             document.getElementById('cartCount').textContent = totalItems;
-
             const cartItemsEl = document.getElementById('cartItems');
             cartItemsEl.innerHTML = '';
-            
             if (carrito.length === 0) {
                 cartItemsEl.innerHTML = '<p class="text-center text-suave py-8">Tu carrito está vacío 🛒</p>';
             } else {
@@ -1257,10 +925,7 @@
                     div.innerHTML = `
                         <div class="flex items-center gap-3 flex-1">
                             ${item.imagen ? `<img src="${item.imagen}" class="w-12 h-12 object-cover rounded-lg">` : ''}
-                            <div>
-                                <p class="font-bold text-sm text-app">${item.nombre}</p>
-                                <p class="text-xs text-suave">${item.cantidad} x $${item.precio.toFixed(2)}</p>
-                            </div>
+                            <div><p class="font-bold text-sm text-app">${item.nombre}</p><p class="text-xs text-suave">${item.cantidad} x $${item.precio.toFixed(2)}</p></div>
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="font-bold text-sm text-app">$${(item.precio * item.cantidad).toFixed(2)}</span>
@@ -1270,7 +935,6 @@
                     cartItemsEl.appendChild(div);
                 });
             }
-
             const total = calcularTotal();
             document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
             document.getElementById('cartTotalBs').textContent = `Bs. ${(total * config.tasa).toFixed(2)}`;
@@ -1281,7 +945,6 @@
         // ==========================================
         function abrirModalPago() {
             if (carrito.length === 0) return alert("El carrito está vacío");
-
             const pagoLista = document.getElementById('pagoLista');
             pagoLista.innerHTML = '';
             config.metodosPago.forEach((metodo, i) => {
@@ -1296,57 +959,41 @@
                 `;
                 pagoLista.appendChild(div);
             });
-
             const datos = document.getElementById('pagoDatos');
             datos.innerHTML = `<p class="font-bold mb-2 text-app">📋 Datos para el pago:</p><pre class="whitespace-pre-wrap text-sm text-app" style="font-family: inherit;">${config.datosPago}</pre>`;
-
             document.getElementById('pagoModal').classList.remove('hidden');
         }
 
         function enviarPedidoWhatsApp() {
             if (carrito.length === 0) return alert("El carrito está vacío");
-
             const metodoSeleccionado = document.querySelector('input[name="metodoPago"]:checked');
             const metodo = metodoSeleccionado ? metodoSeleccionado.value : 'No especificado';
-
             const total = calcularTotal();
             const totalBs = (total * config.tasa).toFixed(2);
-
             let mensaje = `¡Hola! Soy *${config.nombre}* 👋\n\n`;
             mensaje += `Quiero adquirir los siguientes productos de *YESAMI TEAM VARIEDADES*:\n\n`;
-            
             carrito.forEach(item => {
-                mensaje += `▪️ *${item.nombre}*\n`;
-                mensaje += `   Cantidad: ${item.cantidad}\n`;
-                mensaje += `   Precio: $${item.precio.toFixed(2)} c/u\n`;
-                mensaje += `   Subtotal: $${(item.precio * item.cantidad).toFixed(2)}\n\n`;
+                mensaje += `▪️ *${item.nombre}*\n   Cantidad: ${item.cantidad}\n   Precio: $${item.precio.toFixed(2)} c/u\n   Subtotal: $${(item.precio * item.cantidad).toFixed(2)}\n\n`;
             });
-            
-            mensaje += `━━━━━━━━━━━━━━━━━━━━\n`;
-            mensaje += `💰 *TOTAL: $${total.toFixed(2)}*\n`;
-            mensaje += `💱 *TOTAL Bs: ${totalBs}* (Tasa: ${config.tasa})\n`;
-            mensaje += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+            mensaje += `━━━━━━━━━━━━━━━━━━━━\n💰 *TOTAL: $${total.toFixed(2)}*\n💱 *TOTAL Bs: ${totalBs}* (Tasa: ${config.tasa})\n━━━━━━━━━━━━━━━━━━━━\n\n`;
             mensaje += `💳 *Método de pago:* ${metodo}\n\n`;
             mensaje += `📋 *Datos de pago:*\n${config.datosPago}\n\n`;
             mensaje += `Quedo atento(a) para confirmar el pedido. ¡Gracias! 🙏`;
-
-            const urlFinal = `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(mensaje)}`;
-            window.open(urlFinal, '_blank');
+            window.open(`https://wa.me/${config.whatsapp}?text=${encodeURIComponent(mensaje)}`, '_blank');
             document.getElementById('pagoModal').classList.add('hidden');
         }
 
         // ==========================================
-        // ADMIN - LOGIN
+        // ADMIN
         // ==========================================
         function verificarPassword() {
             const pass = document.getElementById('adminPassword').value;
-            const passGuardada = localStorage.getItem(ADMIN_PASS_KEY);
-            if (pass === passGuardada) {
+            if (pass === localStorage.getItem(ADMIN_PASS_KEY)) {
                 document.getElementById('adminLogin').classList.add('hidden');
                 document.getElementById('adminContenido').classList.remove('hidden');
                 document.getElementById('loginError').classList.add('hidden');
                 document.getElementById('adminPassword').value = '';
-                renderizarTablaAdmin();
+                renderizarTablaAdmin(window_productosActuales);
                 renderizarSliderAdmin();
                 cargarConfigEnFormulario();
                 sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
@@ -1366,12 +1013,11 @@
             const vistaAdmin = document.getElementById('vistaAdmin');
             vistaTienda.classList.toggle('hidden');
             vistaAdmin.classList.toggle('active');
-            
             if (vistaAdmin.classList.contains('active')) {
                 if (sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true') {
                     document.getElementById('adminLogin').classList.add('hidden');
                     document.getElementById('adminContenido').classList.remove('hidden');
-                    renderizarTablaAdmin();
+                    renderizarTablaAdmin(window_productosActuales);
                     renderizarSliderAdmin();
                     cargarConfigEnFormulario();
                 } else {
@@ -1395,7 +1041,7 @@
             document.getElementById('adminDatosPago').value = config.datosPago || '';
         }
 
-        function guardarConfiguracion() {
+        async function guardarConfiguracion() {
             config.nombre = document.getElementById('adminNombre').value || 'Robert';
             config.whatsapp = document.getElementById('adminWhatsApp').value || '1234567890';
             config.email = document.getElementById('adminEmail').value || 'contacto@yesamiteam.com';
@@ -1404,18 +1050,16 @@
             config.tasa = parseFloat(document.getElementById('adminTasa').value) || 40;
             config.metodosPago = document.getElementById('adminMetodosPago').value.split('\n').filter(m => m.trim());
             config.datosPago = document.getElementById('adminDatosPago').value;
-
-            localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
-
+            const guardado = await guardarConfigEnFirestore();
+            if (!guardado) alert('⚠️ No se pudo guardar en la nube.');
             const nuevaPass = document.getElementById('adminNuevaPassword').value;
             if (nuevaPass.trim()) {
                 localStorage.setItem(ADMIN_PASS_KEY, nuevaPass);
                 document.getElementById('adminNuevaPassword').value = '';
             }
-
             actualizarContacto();
-            renderizarProductos();
-            renderizarMejoresProductos();
+            renderizarProductos(window_productosActuales);
+            renderizarMejoresProductos(window_productosActuales);
             actualizarInterfazCarrito();
             alert('✅ Configuración guardada correctamente.');
         }
@@ -1423,16 +1067,13 @@
         // ==========================================
         // TABLA ADMIN
         // ==========================================
-        function renderizarTablaAdmin() {
-            const productos = obtenerProductos();
+        function renderizarTablaAdmin(productos) {
             const tbody = document.getElementById('tablaProductos');
             tbody.innerHTML = '';
-            
-            if (productos.length === 0) {
+            if (!productos || productos.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" class="text-center p-4 text-suave">No hay productos registrados.</td></tr>';
                 return;
             }
-
             productos.forEach(p => {
                 const img = p.imagenes && p.imagenes.length > 0 ? p.imagenes[0] : '';
                 const tr = document.createElement('tr');
@@ -1452,30 +1093,29 @@
         }
 
         function editarProducto(id) {
-            const producto = obtenerProductos().find(p => p.id === id);
+            const producto = window_productosActuales.find(p => p.id === id);
             if (!producto) return;
-
             document.getElementById('productoId').value = producto.id;
             document.getElementById('nombre').value = producto.nombre;
             document.getElementById('precio').value = producto.precio;
             document.getElementById('stock').value = producto.stock;
             document.getElementById('categoria').value = producto.categoria || '';
             document.getElementById('descripcion').value = producto.descripcion || '';
-            
             fotosTemporales = producto.imagenes ? [...producto.imagenes] : [];
             renderizarPreviewFotos();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function eliminarProducto(id) {
+        async function eliminarProducto(id) {
             if (confirm('¿Eliminar este producto?')) {
-                const productos = obtenerProductos().filter(p => p.id !== id);
-                guardarProductos(productos);
-                renderizarTablaAdmin();
-                renderizarProductos();
-                renderizarMejoresProductos();
-                carrito = carrito.filter(item => item.id !== id);
-                guardarCarrito();
+                try {
+                    await productosRef.doc(id).delete();
+                    carrito = carrito.filter(item => item.id !== id);
+                    guardarCarrito();
+                } catch (e) {
+                    console.error(e);
+                    alert('Error al eliminar el producto.');
+                }
             }
         }
 
@@ -1506,7 +1146,7 @@
         }
 
         function cargarLogo() {
-            const logo = localStorage.getItem(LOGO_KEY);
+            const logo = localStorage.getItem('yesami_logo');
             const imgLogo = document.getElementById('logoHeader');
             const textoLogo = document.getElementById('textoLogo');
             if (logo) {
@@ -1520,7 +1160,7 @@
         }
 
         function borrarLogo() {
-            localStorage.removeItem(LOGO_KEY);
+            localStorage.removeItem('yesami_logo');
             cargarLogo();
         }
 
@@ -1561,24 +1201,25 @@
             document.getElementById('menuBtn').addEventListener('click', toggleMenu);
             document.getElementById('closeMenu').addEventListener('click', cerrarMenu);
             document.getElementById('menuOverlay').addEventListener('click', cerrarMenu);
-            
             document.getElementById('cartBtn').addEventListener('click', () => document.getElementById('cartModal').classList.remove('hidden'));
             document.getElementById('closeCart').addEventListener('click', () => document.getElementById('cartModal').classList.add('hidden'));
             document.getElementById('clearCart').addEventListener('click', vaciarCarrito);
-
             document.getElementById('adminBtn').addEventListener('click', toggleAdmin);
 
             document.getElementById('themeToggle').addEventListener('click', () => {
                 document.body.classList.toggle('dark-mode');
                 const isDark = document.body.classList.contains('dark-mode');
-                localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+                localStorage.setItem('yesami_tema', isDark ? 'dark' : 'light');
                 document.getElementById('iconMoon').classList.toggle('hidden', isDark);
                 document.getElementById('iconSun').classList.toggle('hidden', !isDark);
             });
 
-            document.getElementById('buscador').addEventListener('input', (e) => renderizarProductos(e.target.value));
+            document.getElementById('buscador').addEventListener('input', (e) => {
+                renderizarProductos(window_productosActuales, e.target.value);
+            });
 
-            document.getElementById('productForm').addEventListener('submit', (e) => {
+            // Formulario producto
+            document.getElementById('productForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const id = document.getElementById('productoId').value;
                 const nombre = document.getElementById('nombre').value;
@@ -1589,47 +1230,44 @@
 
                 if (fotosTemporales.length === 0) return alert('Sube al menos una foto.');
 
-                const productos = obtenerProductos();
-                const nuevoProducto = { id: id || `prod-${Date.now()}`, nombre, precio, stock, categoria, descripcion, imagenes: fotosTemporales };
+                const nuevoProducto = { nombre, precio, stock, categoria, descripcion, imagenes: fotosTemporales };
 
-                if (id) {
-                    const index = productos.findIndex(p => p.id === id);
-                    if (index !== -1) productos[index] = nuevoProducto;
-                } else {
-                    productos.push(nuevoProducto);
+                try {
+                    if (id) {
+                        await productosRef.doc(id).update(nuevoProducto);
+                    } else {
+                        await productosRef.add(nuevoProducto);
+                    }
+                    limpiarFormulario();
+                    alert('✅ Producto guardado en la nube.');
+                } catch (e) {
+                    console.error(e);
+                    alert('❌ Error al guardar: ' + e.message);
                 }
-
-                guardarProductos(productos);
-                renderizarTablaAdmin();
-                renderizarProductos();
-                renderizarMejoresProductos();
-                limpiarFormulario();
-                alert('✅ Producto guardado.');
             });
 
-            document.getElementById('fotosInput').addEventListener('change', (e) => {
+            // Fotos
+            document.getElementById('fotosInput').addEventListener('change', async (e) => {
                 const files = Array.from(e.target.files);
                 if (fotosTemporales.length + files.length > 3) return alert('Máximo 3 fotos.');
-                files.forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        fotosTemporales.push(event.target.result);
-                        renderizarPreviewFotos();
-                    };
-                    reader.readAsDataURL(file);
-                });
+                for (const file of files) {
+                    if (file.size > 3 * 1024 * 1024) {
+                        alert(`"${file.name}" es muy grande (máx 3 MB). Se omitirá.`);
+                        continue;
+                    }
+                    const base64 = await comprimirImagen(file, 800, 0.75);
+                    fotosTemporales.push(base64);
+                }
+                renderizarPreviewFotos();
                 e.target.value = '';
             });
 
-            document.getElementById('logoUpload').addEventListener('change', (e) => {
+            document.getElementById('logoUpload').addEventListener('change', async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    localStorage.setItem(LOGO_KEY, event.target.result);
-                    cargarLogo();
-                };
-                reader.readAsDataURL(file);
+                const base64 = await comprimirImagen(file, 400, 0.8);
+                localStorage.setItem('yesami_logo', base64);
+                cargarLogo();
                 e.target.value = '';
             });
 
@@ -1649,29 +1287,21 @@
                 document.getElementById('confirmModal').classList.add('hidden');
                 document.getElementById('cartModal').classList.remove('hidden');
             });
-
-            // Carrito - enviar WhatsApp abre modal de pago
             document.getElementById('sendWhatsApp').addEventListener('click', () => {
                 document.getElementById('cartModal').classList.add('hidden');
                 abrirModalPago();
             });
-
-            // Modal de pago
             document.getElementById('pagoConfirmar').addEventListener('click', enviarPedidoWhatsApp);
             document.getElementById('pagoCancelar').addEventListener('click', () => document.getElementById('pagoModal').classList.add('hidden'));
             document.getElementById('pagoModal').addEventListener('click', (e) => {
                 if (e.target.id === 'pagoModal') document.getElementById('pagoModal').classList.add('hidden');
             });
-
-            // Enter en password
             document.getElementById('adminPassword').addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') verificarPassword();
             });
         }
 
-        // ==========================================
         // INICIO
-        // ==========================================
         init();
     </script>
 </body>

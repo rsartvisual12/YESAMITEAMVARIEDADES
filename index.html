@@ -339,6 +339,59 @@
                     <div id="sliderAdmin" class="space-y-3"></div>
                 </div>
 
+                <!-- MÚSICA DE FONDO (ADMIN) -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-5 rounded-xl mb-6 border border-app">
+                    <h3 class="font-bold text-lg mb-2 text-app">🎵 Música de Fondo</h3>
+                    <p class="text-xs text-suave mb-3">Se escucha cuando el cliente entra a la página y se repite sin parar. Recomendado: MP3 de menos de 4 MB.</p>
+
+                    <label class="flex items-center gap-2 mb-4 text-app font-medium cursor-pointer">
+                        <input type="checkbox" id="musicaActiva" class="w-4 h-4 accent-pink-500"> Activar música en la tienda
+                    </label>
+
+                    <label class="block text-sm font-medium mb-1 text-app">🎶 Archivo de audio (MP3, M4A, WAV...)</label>
+                    <input type="file" id="musicaArchivo" accept="audio/*" class="w-full text-sm input-bg p-2 rounded-lg">
+                    <p id="musicaNombre" class="text-xs text-suave mt-1">Sin canción cargada.</p>
+
+                    <audio id="musicaPreview" controls class="w-full mt-3"></audio>
+
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium mb-2 text-app">Qué parte se escucha</label>
+                        <label class="flex items-center gap-2 mb-1 text-app cursor-pointer">
+                            <input type="radio" name="musicaModo" value="completa" checked onchange="cambiarModoMusica()" class="accent-pink-500"> Toda la canción (se repite al terminar)
+                        </label>
+                        <label class="flex items-center gap-2 text-app cursor-pointer">
+                            <input type="radio" name="musicaModo" value="fragmento" onchange="cambiarModoMusica()" class="accent-pink-500"> Solo un fragmento (se repite)
+                        </label>
+                    </div>
+
+                    <div id="musicaFragmentoBox" class="hidden mt-3 p-3 rounded-xl" style="background: var(--input-bg);">
+                        <p class="text-xs text-suave mb-2">Reproduce el audio de arriba, pausa donde quieres empezar y pulsa "Marcar inicio". Haz lo mismo para el final.</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-medium mb-1 text-app">Inicio (segundos)</label>
+                                <input type="number" id="musicaInicio" step="0.1" min="0" value="0" class="w-full p-2 rounded-lg border input-bg text-app">
+                                <button type="button" onclick="marcarMusica('inicio')" class="text-xs font-bold text-rosa hover:underline mt-1">📍 Marcar inicio aquí</button>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium mb-1 text-app">Final (segundos)</label>
+                                <input type="number" id="musicaFin" step="0.1" min="0" value="0" class="w-full p-2 rounded-lg border input-bg text-app">
+                                <button type="button" onclick="marcarMusica('fin')" class="text-xs font-bold text-rosa hover:underline mt-1">📍 Marcar final aquí</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium mb-1 text-app">🔊 Volumen: <span id="musicaVolumenTxt">60</span>%</label>
+                        <input type="range" id="musicaVolumen" min="0" max="100" value="60" oninput="document.getElementById('musicaVolumenTxt').textContent = this.value" class="w-full accent-pink-500">
+                    </div>
+
+                    <p id="musicaEstado" class="text-xs text-suave mt-3"></p>
+                    <div class="flex flex-wrap gap-2 mt-3">
+                        <button type="button" onclick="guardarMusica()" class="btn-rosa px-6 py-3 rounded-xl font-bold">💾 Guardar Música</button>
+                        <button type="button" onclick="borrarMusica()" class="text-red-500 text-sm font-bold hover:underline px-3">Eliminar música</button>
+                    </div>
+                </div>
+
                 <form id="productForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 bg-gray-50 dark:bg-gray-800 p-5 rounded-xl border border-app">
                     <h3 class="font-bold text-lg mb-2 text-app md:col-span-2">📦 Agregar / Editar Producto</h3>
                     <input type="hidden" id="productoId">
@@ -451,6 +504,9 @@
         </div>
     </div>
 
+    <!-- BOTÓN MÚSICA -->
+    <button id="musicBtn" onclick="alternarMusica()" class="hidden fixed bottom-4 left-4 z-30 w-12 h-12 text-xl shadow-lg flex items-center justify-center" style="background: var(--rosa); color: white; border-radius: 50%;" aria-label="Música">🔊</button>
+
     <!-- ==========================================
          FIREBASE SDK (solo Firestore, sin Storage)
          ========================================== -->
@@ -558,6 +614,7 @@
             await cargarConfigDesdeFirestore();
             await cargarSliderDesdeFirestore();
             iniciarListenerProductos();
+            cargarMusicaDesdeFirestore();
 
             setTimeout(() => {
                 document.getElementById('splashScreen').classList.add('hidden');
@@ -1312,6 +1369,267 @@
                 if (e.key === 'Enter') verificarPassword();
             });
         }
+
+        // ==========================================
+        // MÚSICA DE FONDO
+        // ==========================================
+        const musicaRef = db.collection('config').doc('musica');
+        const musicaPartesRef = db.collection('musica_partes');
+        const MUSICA_CHUNK = 700000;   // caracteres por documento (Firestore permite ~1 MB)
+        const MUSICA_MAX_MB = 6;
+        let musicaConfig = { activa: false, nombre: '', modo: 'completa', inicio: 0, fin: 0, volumen: 0.6, partes: 0 };
+        let musicaTemporal = null;
+        let musicaBlobUrl = '';
+        let musicaSilenciada = localStorage.getItem('yesami_musica_mute') === '1';
+        let musicaIniciada = false;
+        let musicaLoopTimer = null;
+        const audioFondo = new Audio();
+        audioFondo.preload = 'auto';
+
+        async function dataUrlABlobUrl(dataUrl) {
+            const r = await fetch(dataUrl);
+            const b = await r.blob();
+            return URL.createObjectURL(b);
+        }
+
+        // ---------- CARGA DESDE FIRESTORE ----------
+        async function cargarMusicaDesdeFirestore() {
+            try {
+                const doc = await musicaRef.get();
+                if (!doc.exists) { cargarMusicaEnFormulario(); return; }
+                musicaConfig = { ...musicaConfig, ...doc.data() };
+                if (musicaConfig.partes > 0) {
+                    const snap = await musicaPartesRef.orderBy('idx').get();
+                    let data = '';
+                    snap.forEach(d => { data += d.data().data; });
+                    musicaBlobUrl = data ? await dataUrlABlobUrl(data) : '';
+                }
+                cargarMusicaEnFormulario();
+                prepararMusicaPublica();
+            } catch (e) {
+                console.warn('Música no disponible:', e);
+            }
+        }
+
+        // ---------- REPRODUCCIÓN PARA EL CLIENTE ----------
+        function prepararMusicaPublica() {
+            detenerMusica();
+            const btn = document.getElementById('musicBtn');
+            if (!musicaConfig.activa || !musicaBlobUrl) { btn.classList.add('hidden'); return; }
+            btn.classList.remove('hidden');
+            audioFondo.src = musicaBlobUrl;
+            audioFondo.volume = Math.min(1, Math.max(0, musicaConfig.volumen ?? 0.6));
+            audioFondo.loop = musicaConfig.modo !== 'fragmento';
+            audioFondo.muted = musicaSilenciada;
+            actualizarIconoMusica();
+            iniciarMusica();
+        }
+
+        function iniciarMusica() {
+            if (!musicaConfig.activa || !musicaBlobUrl) return;
+            if (musicaConfig.modo === 'fragmento') {
+                const ini = Number(musicaConfig.inicio) || 0;
+                try { if (audioFondo.currentTime < ini) audioFondo.currentTime = ini; } catch (e) {}
+            }
+            const p = audioFondo.play();
+            if (p && p.then) {
+                p.then(() => {
+                    musicaIniciada = true;
+                    iniciarVigilanteMusica();
+                    actualizarIconoMusica();
+                }).catch(() => { /* el navegador bloqueó el autoplay: arranca con el primer toque */ });
+            }
+        }
+
+        function detenerMusica() {
+            audioFondo.pause();
+            clearInterval(musicaLoopTimer);
+            musicaIniciada = false;
+        }
+
+        function iniciarVigilanteMusica() {
+            clearInterval(musicaLoopTimer);
+            if (musicaConfig.modo !== 'fragmento') return;
+            musicaLoopTimer = setInterval(() => {
+                const ini = Number(musicaConfig.inicio) || 0;
+                const fin = Number(musicaConfig.fin) || 0;
+                if (fin > ini && audioFondo.currentTime >= fin) audioFondo.currentTime = ini;
+                else if (audioFondo.currentTime < ini) audioFondo.currentTime = ini;
+            }, 100);
+        }
+
+        audioFondo.addEventListener('ended', () => {
+            if (musicaConfig.modo === 'fragmento') {
+                audioFondo.currentTime = Number(musicaConfig.inicio) || 0;
+                audioFondo.play().catch(() => {});
+            }
+        });
+
+        function actualizarIconoMusica() {
+            const btn = document.getElementById('musicBtn');
+            if (btn) btn.textContent = musicaSilenciada ? '🔇' : '🔊';
+        }
+
+        function alternarMusica() {
+            if (!musicaIniciada) {
+                musicaSilenciada = false;
+                audioFondo.muted = false;
+                localStorage.setItem('yesami_musica_mute', '0');
+                actualizarIconoMusica();
+                iniciarMusica();
+                return;
+            }
+            musicaSilenciada = !musicaSilenciada;
+            audioFondo.muted = musicaSilenciada;
+            localStorage.setItem('yesami_musica_mute', musicaSilenciada ? '1' : '0');
+            actualizarIconoMusica();
+        }
+
+        // Los navegadores no dejan sonar audio sin que la persona toque la pantalla:
+        // en cuanto el cliente toque o haga clic en cualquier parte, arranca la música.
+        ['click', 'pointerup', 'touchend', 'keydown'].forEach(ev => {
+            document.addEventListener(ev, () => {
+                if (!musicaIniciada && musicaConfig.activa && musicaBlobUrl) iniciarMusica();
+            }, { passive: true });
+        });
+
+        // ---------- PANEL ADMIN ----------
+        function cambiarModoMusica() {
+            const modo = document.querySelector('input[name="musicaModo"]:checked').value;
+            document.getElementById('musicaFragmentoBox').classList.toggle('hidden', modo !== 'fragmento');
+        }
+
+        function marcarMusica(cual) {
+            const prev = document.getElementById('musicaPreview');
+            const t = Math.round(prev.currentTime * 10) / 10;
+            document.getElementById(cual === 'inicio' ? 'musicaInicio' : 'musicaFin').value = t;
+        }
+
+        function cargarMusicaEnFormulario() {
+            const el = id => document.getElementById(id);
+            if (!el('musicaActiva')) return;
+            el('musicaActiva').checked = !!musicaConfig.activa;
+            document.querySelectorAll('input[name="musicaModo"]').forEach(r => { r.checked = (r.value === (musicaConfig.modo || 'completa')); });
+            el('musicaInicio').value = musicaConfig.inicio || 0;
+            el('musicaFin').value = musicaConfig.fin || 0;
+            const vol = Math.round((musicaConfig.volumen ?? 0.6) * 100);
+            el('musicaVolumen').value = vol;
+            el('musicaVolumenTxt').textContent = vol;
+            el('musicaNombre').textContent = musicaConfig.nombre ? `Canción actual: ${musicaConfig.nombre}` : 'Sin canción cargada.';
+            if (musicaBlobUrl && !musicaTemporal) el('musicaPreview').src = musicaBlobUrl;
+            cambiarModoMusica();
+        }
+
+        function configurarMusicaAdmin() {
+            const archivo = document.getElementById('musicaArchivo');
+            const prev = document.getElementById('musicaPreview');
+            if (!archivo || !prev) return;
+
+            // Si el admin escucha la vista previa, se pausa la música de fondo
+            prev.addEventListener('play', () => audioFondo.pause());
+
+            archivo.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                if (!file.type.startsWith('audio/')) { alert('Elige un archivo de audio.'); e.target.value = ''; return; }
+                if (file.size > MUSICA_MAX_MB * 1024 * 1024) {
+                    alert(`El audio pesa demasiado (máx ${MUSICA_MAX_MB} MB). Usa un MP3 más liviano.`);
+                    e.target.value = '';
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = () => {
+                    musicaTemporal = { dataUrl: reader.result, nombre: file.name };
+                    prev.src = URL.createObjectURL(file);
+                    document.getElementById('musicaNombre').textContent = `Nueva canción: ${file.name} (pulsa "Guardar Música")`;
+                    prev.onloadedmetadata = () => {
+                        if (!parseFloat(document.getElementById('musicaFin').value)) {
+                            document.getElementById('musicaFin').value = Math.floor(prev.duration || 0);
+                        }
+                    };
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function guardarMusica() {
+            const estado = document.getElementById('musicaEstado');
+            try {
+                const modo = document.querySelector('input[name="musicaModo"]:checked').value;
+                const inicio = parseFloat(document.getElementById('musicaInicio').value) || 0;
+                const fin = parseFloat(document.getElementById('musicaFin').value) || 0;
+                if (modo === 'fragmento' && fin > 0 && fin <= inicio) {
+                    return alert('El segundo final debe ser mayor que el inicial.');
+                }
+                const nueva = {
+                    activa: document.getElementById('musicaActiva').checked,
+                    nombre: musicaConfig.nombre || '',
+                    modo, inicio, fin,
+                    volumen: (parseInt(document.getElementById('musicaVolumen').value) || 0) / 100,
+                    partes: musicaConfig.partes || 0
+                };
+
+                if (musicaTemporal) {
+                    estado.textContent = '⏳ Subiendo música, espera un momento...';
+                    const viejos = await musicaPartesRef.get();
+                    const batch = db.batch();
+                    viejos.forEach(d => batch.delete(d.ref));
+                    await batch.commit();
+
+                    const data = musicaTemporal.dataUrl;
+                    const total = Math.ceil(data.length / MUSICA_CHUNK);
+                    for (let i = 0; i < total; i++) {
+                        await musicaPartesRef.doc('p' + String(i).padStart(3, '0')).set({
+                            idx: i,
+                            data: data.slice(i * MUSICA_CHUNK, (i + 1) * MUSICA_CHUNK)
+                        });
+                        estado.textContent = `⏳ Subiendo música... ${Math.round(((i + 1) / total) * 100)}%`;
+                    }
+                    nueva.partes = total;
+                    nueva.nombre = musicaTemporal.nombre;
+                }
+
+                await musicaRef.set(nueva);
+                musicaConfig = nueva;
+                if (musicaTemporal) {
+                    musicaBlobUrl = await dataUrlABlobUrl(musicaTemporal.dataUrl);
+                    musicaTemporal = null;
+                    document.getElementById('musicaArchivo').value = '';
+                }
+                estado.textContent = '✅ Música guardada.';
+                cargarMusicaEnFormulario();
+                prepararMusicaPublica();
+                alert('✅ Música guardada correctamente.');
+            } catch (e) {
+                console.error(e);
+                estado.textContent = '❌ Error al guardar la música.';
+                alert('❌ Error al guardar la música: ' + e.message);
+            }
+        }
+
+        async function borrarMusica() {
+            if (!confirm('¿Eliminar la música de la tienda?')) return;
+            try {
+                const viejos = await musicaPartesRef.get();
+                const batch = db.batch();
+                viejos.forEach(d => batch.delete(d.ref));
+                await batch.commit();
+                musicaConfig = { activa: false, nombre: '', modo: 'completa', inicio: 0, fin: 0, volumen: 0.6, partes: 0 };
+                await musicaRef.set(musicaConfig);
+                musicaBlobUrl = '';
+                musicaTemporal = null;
+                document.getElementById('musicaPreview').removeAttribute('src');
+                document.getElementById('musicaArchivo').value = '';
+                document.getElementById('musicaEstado').textContent = '';
+                cargarMusicaEnFormulario();
+                prepararMusicaPublica();
+            } catch (e) {
+                console.error(e);
+                alert('Error al eliminar la música.');
+            }
+        }
+
+        configurarMusicaAdmin();
 
         // INICIO
         init();

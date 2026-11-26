@@ -95,6 +95,9 @@
         .thumb-img { width: 100%; height: 50px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid transparent; transition: border 0.2s; }
         .thumb-img.active { border-color: var(--rosa); }
 
+        /* ETIQUETA DISPONIBILIDAD INMEDIATA */
+        .badge-inmediata { position: absolute; top: 8px; left: 8px; z-index: 2; background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; font-size: 0.65rem; font-weight: 700; padding: 3px 8px; border-radius: 999px; box-shadow: 0 2px 8px rgba(0,0,0,0.25); }
+
         .menu-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 40; backdrop-filter: blur(4px); }
         .menu-overlay.active { display: block; }
         .sidebar { position: fixed; left: -320px; top: 0; bottom: 0; width: 300px; background: var(--tarjeta-app); z-index: 50; transition: left 0.4s cubic-bezier(0.77, 0, 0.175, 1); box-shadow: 4px 0 30px rgba(0,0,0,0.15); }
@@ -180,6 +183,9 @@
             <a href="#" onclick="cerrarMenuYIr(event, 'vistaTienda')" class="flex items-center gap-3 py-3 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium text-app">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio
             </a>
+            <a href="#" onclick="cerrarMenuYIr(event, 'seccionInmediata')" class="flex items-center gap-3 py-3 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium text-app">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Disponibilidad Inmediata
+            </a>
             <a href="#" onclick="cerrarMenuYIr(event, 'seccionProductos')" class="flex items-center gap-3 py-3 px-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition font-medium text-app">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>Todos los Productos
             </a>
@@ -218,8 +224,16 @@
             <input type="text" id="buscador" placeholder="🔍 Buscar productos..." class="w-full p-3 rounded-xl border input-bg shadow-sm text-app">
         </div>
 
+        <!-- NUEVA SECCIÓN: DISPONIBILIDAD INMEDIATA -->
+        <div id="seccionInmediata" class="mb-10">
+            <h3 class="text-xl font-bold mb-1 text-app">⚡ Disponibilidad Inmediata</h3>
+            <p class="text-xs text-suave mb-4">Productos en existencia, listos para venta y entrega rápida.</p>
+            <div id="inmediataGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4"></div>
+        </div>
+
         <div id="seccionProductos">
-            <h3 class="text-xl font-bold mb-4 text-app">📦 Todos los Productos</h3>
+            <h3 class="text-xl font-bold mb-1 text-app">📦 Todos los Productos</h3>
+            <p class="text-xs text-suave mb-4">* Productos por encargo. El precio está sujeto a cambio sin previo aviso.</p>
             <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4"></div>
         </div>
         
@@ -244,12 +258,18 @@
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                 </a>
 
-                <div class="flex items-center gap-4 p-4 rounded-xl" style="background: var(--input-bg);">
-                    <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #d63384, #7c3aed);">
+                <!-- EMAIL COMO ENLACE DIRECTO -->
+                <a id="contactoEmailBtn" href="#" class="flex items-center gap-4 p-4 rounded-xl transition-all hover:scale-[1.03] active:scale-95 cursor-pointer shadow-md hover:shadow-xl" style="background: linear-gradient(135deg, #d63384, #7c3aed);">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center bg-white/20 backdrop-blur-sm">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
                     </div>
-                    <div><p class="text-sm text-suave">Email</p><p id="contactoEmail" class="font-bold text-app">Cargando...</p></div>
-                </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm text-white/90 font-medium">Email</p>
+                        <p id="contactoEmail" class="font-bold text-white text-base break-all">Cargando...</p>
+                    </div>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </a>
+
                 <div class="flex items-center gap-4 p-4 rounded-xl" style="background: var(--input-bg);">
                     <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #0d6efd, #06b6d4);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -342,14 +362,15 @@
                 <!-- MÚSICA DE FONDO (ADMIN) -->
                 <div class="bg-gray-50 dark:bg-gray-800 p-5 rounded-xl mb-6 border border-app">
                     <h3 class="font-bold text-lg mb-2 text-app">🎵 Música de Fondo</h3>
-                    <p class="text-xs text-suave mb-3">Se escucha cuando el cliente entra a la página y se repite sin parar. Recomendado: MP3 de menos de 4 MB.</p>
+                    <p class="text-xs text-suave mb-3">Se escucha cuando el cliente entra a la página y se repite sin parar. Puedes subir un <b>VIDEO</b> (MP4, MOV, WEBM...) o un audio (MP3, M4A, WAV...). Si subes un video, se extrae solo el audio y se corta automáticamente.</p>
 
                     <label class="flex items-center gap-2 mb-4 text-app font-medium cursor-pointer">
                         <input type="checkbox" id="musicaActiva" class="w-4 h-4 accent-pink-500"> Activar música en la tienda
                     </label>
 
-                    <label class="block text-sm font-medium mb-1 text-app">🎶 Archivo de audio (MP3, M4A, WAV...)</label>
-                    <input type="file" id="musicaArchivo" accept="audio/*" class="w-full text-sm input-bg p-2 rounded-lg">
+                    <label class="block text-sm font-medium mb-1 text-app">🎬 Video o audio (MP4, MOV, WEBM, MP3, M4A, WAV...)</label>
+                    <input type="file" id="musicaArchivo" accept="audio/*,video/*,.mp4,.mov,.m4v,.webm,.mkv,.3gp,.mp3,.m4a,.wav,.aac,.ogg" class="w-full text-sm input-bg p-2 rounded-lg">
+                    <p class="text-xs text-suave mt-1">💡 Videos hasta 150 MB (mejor si son de pocos minutos). El audio que se guarda puede durar hasta unos 2 minutos, así que usa "Solo un fragmento" para elegir la parte que quieres.</p>
                     <p id="musicaNombre" class="text-xs text-suave mt-1">Sin canción cargada.</p>
 
                     <audio id="musicaPreview" controls class="w-full mt-3"></audio>
@@ -365,7 +386,7 @@
                     </div>
 
                     <div id="musicaFragmentoBox" class="hidden mt-3 p-3 rounded-xl" style="background: var(--input-bg);">
-                        <p class="text-xs text-suave mb-2">Reproduce el audio de arriba, pausa donde quieres empezar y pulsa "Marcar inicio". Haz lo mismo para el final.</p>
+                        <p class="text-xs text-suave mb-2">Reproduce el audio de arriba, pausa donde quieres empezar y pulsa "Marcar inicio". Haz lo mismo para el final. Si subiste un video, el fragmento se corta y se guarda ya recortado.</p>
                         <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-xs font-medium mb-1 text-app">Inicio (segundos)</label>
@@ -399,11 +420,18 @@
                     <div class="md:col-span-1"><label class="block text-sm font-medium mb-1 text-app">Precio en $ *</label><input type="number" id="precio" step="0.01" required class="w-full p-2 border rounded-lg input-bg text-app"></div>
                     <div class="md:col-span-1"><label class="block text-sm font-medium mb-1 text-app">Stock *</label><input type="number" id="stock" required class="w-full p-2 border rounded-lg input-bg text-app"></div>
                     <div class="md:col-span-1"><label class="block text-sm font-medium mb-1 text-app">Categoría</label><input type="text" id="categoria" placeholder="Ej: Collares" class="w-full p-2 border rounded-lg input-bg text-app"></div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium mb-1 text-app">Tipo de producto *</label>
+                        <select id="tipoProducto" class="w-full p-2 border rounded-lg input-bg text-app">
+                            <option value="encargo">📦 Por encargo (aparece en "Todos los Productos")</option>
+                            <option value="inmediata">⚡ Disponibilidad inmediata (aparece en "Disponibilidad Inmediata")</option>
+                        </select>
+                    </div>
                     <div class="md:col-span-2"><label class="block text-sm font-medium mb-1 text-app">Descripción *</label><textarea id="descripcion" rows="3" required class="w-full p-2 border rounded-lg input-bg text-app"></textarea></div>
                     <div class="md:col-span-2">
-                        <label class="block text-sm font-medium mb-1 text-app">Fotos (Máximo 3) *</label>
+                        <label class="block text-sm font-medium mb-1 text-app">Fotos (Máximo 6) *</label>
                         <input type="file" id="fotosInput" accept="image/*" multiple class="w-full text-sm input-bg p-2 rounded-lg">
-                        <p class="text-xs text-suave mt-1">💡 Las imágenes se comprimen automáticamente. Máx 300 KB por foto.</p>
+                        <p class="text-xs text-suave mt-1">💡 Las imágenes se comprimen automáticamente. Máx 3 MB por foto original.</p>
                         <div id="previewFotos" class="flex gap-2 mt-2 flex-wrap"></div>
                     </div>
                     <div class="md:col-span-2 flex flex-wrap gap-2">
@@ -416,7 +444,7 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
                         <thead class="bg-gray-100 dark:bg-gray-700 text-suave uppercase text-xs">
-                            <tr><th class="p-3">Imagen</th><th class="p-3">Nombre</th><th class="p-3">Precio</th><th class="p-3">Stock</th><th class="p-3">Acciones</th></tr>
+                            <tr><th class="p-3">Imagen</th><th class="p-3">Nombre</th><th class="p-3">Tipo</th><th class="p-3">Precio</th><th class="p-3">Stock</th><th class="p-3">Acciones</th></tr>
                         </thead>
                         <tbody id="tablaProductos" class="text-app"></tbody>
                     </table>
@@ -453,11 +481,12 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <img id="detailImagenPrincipal" src="" alt="" class="w-full h-64 object-cover rounded-xl mb-3 shadow-md">
-                        <div id="detailMiniaturas" class="flex gap-2"></div>
+                        <div id="detailMiniaturas" class="grid grid-cols-6 gap-2"></div>
                     </div>
                     <div class="flex flex-col">
                         <p id="detailPrecio" class="text-3xl font-bold text-rosa mb-1"></p>
-                        <p id="detailPrecioBs" class="text-sm text-suave mb-3"></p>
+                        <p id="detailPrecioBs" class="text-sm text-suave mb-1"></p>
+                        <p id="detailAviso" class="text-xs text-suave mb-3 hidden">* Precio sujeto a cambio.</p>
                         <p id="detailStock" class="text-sm text-suave mb-4"></p>
                         <p id="detailDescripcion" class="text-app leading-relaxed mb-6 flex-1"></p>
                         <button id="detailAddBtn" class="w-full btn-rosa py-3 rounded-xl font-bold text-lg">🛒 Añadir al Carrito</button>
@@ -538,6 +567,7 @@
         const ADMIN_PASS_KEY = 'yesami_admin_pass';
         const ADMIN_SESSION_KEY = 'yesami_admin_session';
         const DEFAULT_PASSWORD = "yesami2026";
+        const MAX_FOTOS = 6;
 
         let carrito = JSON.parse(localStorage.getItem('yesami_carrito')) || [];
         let fotosTemporales = [];
@@ -698,7 +728,7 @@
         }
 
         // ==========================================
-        // CONTACTO (CON BOTÓN WHATSAPP)
+        // CONTACTO (CON BOTÓN WHATSAPP Y ENLACE DE EMAIL)
         // ==========================================
         function actualizarContacto() {
             document.getElementById('contactoWhatsApp').textContent = `+${config.whatsapp}`;
@@ -709,6 +739,11 @@
             const btnWA = document.getElementById('contactoWhatsAppBtn');
             if (btnWA) {
                 btnWA.href = `https://wa.me/${config.whatsapp}?text=${encodeURIComponent('¡Hola! Vengo desde la página web de YESAMI TEAM VARIEDADES y quiero más información.')}`;
+            }
+            // Configurar el enlace directo de Email
+            const btnEmail = document.getElementById('contactoEmailBtn');
+            if (btnEmail) {
+                btnEmail.href = `mailto:${config.email}?subject=${encodeURIComponent('Consulta desde YESAMI TEAM VARIEDADES')}&body=${encodeURIComponent('¡Hola! Vengo desde la página web de YESAMI TEAM VARIEDADES y quiero más información.')}`;
             }
         }
 
@@ -803,18 +838,32 @@
         // ==========================================
         function renderizarProductos(productos, filtro = '') {
             const grid = document.getElementById('productGrid');
+            const gridInmediata = document.getElementById('inmediataGrid');
             const emptyMsg = document.getElementById('emptyMsg');
             const filtrados = productos.filter(p => 
                 (p.nombre || '').toLowerCase().includes(filtro.toLowerCase()) ||
                 (p.categoria && p.categoria.toLowerCase().includes(filtro.toLowerCase()))
             );
+            // Separar: disponibilidad inmediata vs por encargo (los anteriores sin "tipo" son por encargo)
+            const inmediatos = filtrados.filter(p => p.tipo === 'inmediata');
+            const encargos = filtrados.filter(p => p.tipo !== 'inmediata');
+
+            // Sección Disponibilidad Inmediata
+            gridInmediata.innerHTML = '';
+            if (inmediatos.length === 0) {
+                gridInmediata.innerHTML = '<p class="text-suave col-span-full text-center py-6">Pronto tendremos productos con disponibilidad inmediata.</p>';
+            } else {
+                inmediatos.forEach(p => gridInmediata.appendChild(crearTarjetaProducto(p)));
+            }
+
+            // Sección Todos los Productos (por encargo)
             grid.innerHTML = '';
-            if (filtrados.length === 0) {
+            if (encargos.length === 0) {
                 emptyMsg.classList.remove('hidden');
                 return;
             }
             emptyMsg.classList.add('hidden');
-            filtrados.forEach(p => grid.appendChild(crearTarjetaProducto(p)));
+            encargos.forEach(p => grid.appendChild(crearTarjetaProducto(p)));
         }
 
         function renderizarMejoresProductos(productos) {
@@ -831,10 +880,12 @@
         function crearTarjetaProducto(p) {
             const imgPrincipal = p.imagenes && p.imagenes.length > 0 ? p.imagenes[0] : 'https://via.placeholder.com/400x400/cccccc/ffffff?text=Sin+Imagen';
             const precioBs = (p.precio * config.tasa).toFixed(2);
+            const esInmediata = p.tipo === 'inmediata';
             const div = document.createElement('div');
             div.className = 'product-card animate-fade-in';
             div.innerHTML = `
                 <div class="img-container">
+                    ${esInmediata ? '<span class="badge-inmediata">⚡ Entrega inmediata</span>' : ''}
                     <img src="${imgPrincipal}" alt="${p.nombre}" loading="lazy">
                     <div class="overlay-desc"><p class="font-bold mb-1">${p.nombre}</p><p class="opacity-90 line-clamp-3">${p.descripcion || ''}</p></div>
                 </div>
@@ -908,6 +959,8 @@
             document.getElementById('detailNombre').textContent = producto.nombre;
             document.getElementById('detailPrecio').textContent = `$${producto.precio.toFixed(2)}`;
             document.getElementById('detailPrecioBs').textContent = `Bs. ${(producto.precio * config.tasa).toFixed(2)}`;
+            // Aviso de precio sujeto a cambio (productos por encargo)
+            document.getElementById('detailAviso').classList.toggle('hidden', producto.tipo === 'inmediata');
             document.getElementById('detailStock').textContent = `Unidades disponibles: ${producto.stock}`;
             document.getElementById('detailDescripcion').textContent = producto.descripcion || 'Sin descripción';
             const imgPrincipal = producto.imagenes && producto.imagenes.length > 0 ? producto.imagenes[0] : 'https://via.placeholder.com/600x600/cccccc/ffffff?text=Sin+Imagen';
@@ -1140,16 +1193,18 @@
             const tbody = document.getElementById('tablaProductos');
             tbody.innerHTML = '';
             if (!productos || productos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center p-4 text-suave">No hay productos registrados.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center p-4 text-suave">No hay productos registrados.</td></tr>';
                 return;
             }
             productos.forEach(p => {
                 const img = p.imagenes && p.imagenes.length > 0 ? p.imagenes[0] : '';
+                const tipoTxt = p.tipo === 'inmediata' ? '⚡ Inmediata' : '📦 Encargo';
                 const tr = document.createElement('tr');
                 tr.className = 'border-b border-app hover:bg-gray-50 dark:hover:bg-gray-700 transition';
                 tr.innerHTML = `
                     <td class="p-3">${img ? `<img src="${img}" class="w-10 h-10 object-cover rounded">` : '—'}</td>
                     <td class="p-3 font-medium text-app">${p.nombre}</td>
+                    <td class="p-3 text-app text-xs">${tipoTxt}</td>
                     <td class="p-3 text-app">$${p.precio.toFixed(2)}</td>
                     <td class="p-3 text-app">${p.stock}</td>
                     <td class="p-3 flex gap-2">
@@ -1169,6 +1224,7 @@
             document.getElementById('precio').value = producto.precio;
             document.getElementById('stock').value = producto.stock;
             document.getElementById('categoria').value = producto.categoria || '';
+            document.getElementById('tipoProducto').value = producto.tipo === 'inmediata' ? 'inmediata' : 'encargo';
             document.getElementById('descripcion').value = producto.descripcion || '';
             fotosTemporales = producto.imagenes ? [...producto.imagenes] : [];
             renderizarPreviewFotos();
@@ -1295,11 +1351,18 @@
                 const precio = parseFloat(document.getElementById('precio').value);
                 const stock = parseInt(document.getElementById('stock').value);
                 const categoria = document.getElementById('categoria').value;
+                const tipo = document.getElementById('tipoProducto').value;
                 const descripcion = document.getElementById('descripcion').value;
 
                 if (fotosTemporales.length === 0) return alert('Sube al menos una foto.');
 
-                const nuevoProducto = { nombre, precio, stock, categoria, descripcion, imagenes: fotosTemporales };
+                // Firestore permite ~1 MB por documento: se revisa el peso total de las fotos
+                const pesoFotos = fotosTemporales.reduce((sum, f) => sum + f.length, 0);
+                if (pesoFotos > 900000) {
+                    return alert('Las fotos pesan demasiado en conjunto. Elimina alguna o usa imágenes más livianas.');
+                }
+
+                const nuevoProducto = { nombre, precio, stock, categoria, tipo, descripcion, imagenes: fotosTemporales };
 
                 try {
                     if (id) {
@@ -1315,16 +1378,19 @@
                 }
             });
 
-            // Fotos
+            // Fotos (hasta 6)
             document.getElementById('fotosInput').addEventListener('change', async (e) => {
                 const files = Array.from(e.target.files);
-                if (fotosTemporales.length + files.length > 3) return alert('Máximo 3 fotos.');
+                if (fotosTemporales.length + files.length > MAX_FOTOS) {
+                    e.target.value = '';
+                    return alert(`Máximo ${MAX_FOTOS} fotos.`);
+                }
                 for (const file of files) {
                     if (file.size > 3 * 1024 * 1024) {
                         alert(`"${file.name}" es muy grande (máx 3 MB). Se omitirá.`);
                         continue;
                     }
-                    const base64 = await comprimirImagen(file, 800, 0.75);
+                    const base64 = await comprimirImagen(file, 700, 0.7);
                     fotosTemporales.push(base64);
                 }
                 renderizarPreviewFotos();
@@ -1376,7 +1442,8 @@
         const musicaRef = db.collection('config').doc('musica');
         const musicaPartesRef = db.collection('musica_partes');
         const MUSICA_CHUNK = 700000;   // caracteres por documento (Firestore permite ~1 MB)
-        const MUSICA_MAX_MB = 6;
+        const MUSICA_MAX_MB = 6;       // tamaño máximo del audio que se guarda
+        const MUSICA_VIDEO_MAX_MB = 150; // tamaño máximo del video que se puede cargar para extraer su audio
         let musicaConfig = { activa: false, nombre: '', modo: 'completa', inicio: 0, fin: 0, volumen: 0.6, partes: 0 };
         let musicaTemporal = null;
         let musicaBlobUrl = '';
@@ -1390,6 +1457,96 @@
             const r = await fetch(dataUrl);
             const b = await r.blob();
             return URL.createObjectURL(b);
+        }
+
+        // ---------- EXTRAER AUDIO DE UN VIDEO (Y CORTARLO) ----------
+        // Decodifica el audio del video en el navegador, recorta el fragmento y lo guarda como WAV liviano (mono).
+        function blobADataUrl(blob) {
+            return new Promise((resolve, reject) => {
+                const r = new FileReader();
+                r.onload = () => resolve(r.result);
+                r.onerror = reject;
+                r.readAsDataURL(blob);
+            });
+        }
+
+        function escribirTexto(view, offset, texto) {
+            for (let i = 0; i < texto.length; i++) view.setUint8(offset + i, texto.charCodeAt(i));
+        }
+
+        function pcmAWavBlob(pcm, sampleRate) {
+            const buffer = new ArrayBuffer(44 + pcm.length * 2);
+            const view = new DataView(buffer);
+            escribirTexto(view, 0, 'RIFF');
+            view.setUint32(4, 36 + pcm.length * 2, true);
+            escribirTexto(view, 8, 'WAVE');
+            escribirTexto(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);            // PCM
+            view.setUint16(22, 1, true);            // mono
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true);
+            escribirTexto(view, 36, 'data');
+            view.setUint32(40, pcm.length * 2, true);
+            for (let i = 0; i < pcm.length; i++) view.setInt16(44 + i * 2, pcm[i], true);
+            return new Blob([buffer], { type: 'audio/wav' });
+        }
+
+        async function extraerAudioDeVideo(file, inicio, fin) {
+            const AC = window.AudioContext || window.webkitAudioContext;
+            if (!AC) throw new Error('Tu navegador no permite extraer audio de videos.');
+            const ctx = new AC();
+            let audioBuf;
+            try {
+                const datos = await file.arrayBuffer();
+                audioBuf = await new Promise((res, rej) => ctx.decodeAudioData(datos, res, rej));
+            } catch (err) {
+                try { ctx.close(); } catch (e) {}
+                throw new Error('No pude leer el audio de este video. Prueba con un MP4 más corto (o con un MP3).');
+            }
+            try { ctx.close(); } catch (e) {}
+
+            const sr = audioBuf.sampleRate;
+            const total = audioBuf.length;
+            const s0 = Math.max(0, Math.floor(inicio * sr));
+            const s1 = fin > inicio ? Math.min(total, Math.floor(fin * sr)) : total;
+            if (s1 <= s0) throw new Error('El fragmento elegido está vacío. Revisa los segundos de inicio y final.');
+            const n = s1 - s0;
+
+            // Mezclar a mono
+            const mono = new Float32Array(n);
+            const canales = audioBuf.numberOfChannels;
+            for (let c = 0; c < canales; c++) {
+                const d = audioBuf.getChannelData(c);
+                for (let i = 0; i < n; i++) mono[i] += d[s0 + i] / canales;
+            }
+
+            // Elegir calidad según la duración para que quepa en el límite
+            const maxBytes = MUSICA_MAX_MB * 1024 * 1024;
+            const dur = n / sr;
+            let objetivo = 22050;
+            if (dur * objetivo * 2 > maxBytes) objetivo = 16000;
+            if (dur * objetivo * 2 > maxBytes) {
+                const maxSeg = Math.floor(maxBytes / (16000 * 2));
+                throw new Error(`El audio dura ${Math.round(dur)} s y es demasiado largo. Elige un fragmento de máximo ${maxSeg} segundos.`);
+            }
+
+            // Reducir la frecuencia de muestreo (promedio simple)
+            const ratio = sr / objetivo;
+            const largoSalida = Math.floor(n / ratio);
+            const pcm = new Int16Array(largoSalida);
+            for (let i = 0; i < largoSalida; i++) {
+                const a = Math.floor(i * ratio);
+                const b = Math.max(a + 1, Math.min(n, Math.floor((i + 1) * ratio)));
+                let suma = 0;
+                for (let j = a; j < b; j++) suma += mono[j];
+                let v = suma / (b - a);
+                v = Math.max(-1, Math.min(1, v));
+                pcm[i] = v < 0 ? v * 0x8000 : v * 0x7FFF;
+            }
+            return await blobADataUrl(pcmAWavBlob(pcm, objetivo));
         }
 
         // ---------- CARGA DESDE FIRESTORE ----------
@@ -1531,24 +1688,41 @@
             archivo.addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
-                if (!file.type.startsWith('audio/')) { alert('Elige un archivo de audio.'); e.target.value = ''; return; }
-                if (file.size > MUSICA_MAX_MB * 1024 * 1024) {
-                    alert(`El audio pesa demasiado (máx ${MUSICA_MAX_MB} MB). Usa un MP3 más liviano.`);
+                const tipo = file.type || '';
+                const esAudioTipo = tipo.startsWith('audio/');
+                const esVideo = !esAudioTipo && (tipo.startsWith('video/') || /\.(mp4|mov|m4v|webm|mkv|3gp)$/i.test(file.name));
+                const esAudio = esAudioTipo || /\.(mp3|m4a|wav|aac|ogg|oga|flac)$/i.test(file.name);
+
+                if (!esVideo && !esAudio) { alert('Elige un video o un archivo de audio.'); e.target.value = ''; return; }
+
+                const maxMB = esVideo ? MUSICA_VIDEO_MAX_MB : MUSICA_MAX_MB;
+                if (file.size > maxMB * 1024 * 1024) {
+                    alert(esVideo
+                        ? `El video pesa demasiado (máx ${MUSICA_VIDEO_MAX_MB} MB). Usa uno más corto o más liviano.`
+                        : `El audio pesa demasiado (máx ${MUSICA_MAX_MB} MB). Usa un MP3 más liviano.`);
                     e.target.value = '';
                     return;
                 }
-                const reader = new FileReader();
-                reader.onload = () => {
-                    musicaTemporal = { dataUrl: reader.result, nombre: file.name };
-                    prev.src = URL.createObjectURL(file);
-                    document.getElementById('musicaNombre').textContent = `Nueva canción: ${file.name} (pulsa "Guardar Música")`;
-                    prev.onloadedmetadata = () => {
-                        if (!parseFloat(document.getElementById('musicaFin').value)) {
-                            document.getElementById('musicaFin').value = Math.floor(prev.duration || 0);
-                        }
-                    };
+
+                prev.src = URL.createObjectURL(file);
+                prev.onloadedmetadata = () => {
+                    if (!parseFloat(document.getElementById('musicaFin').value)) {
+                        document.getElementById('musicaFin').value = Math.floor(prev.duration || 0);
+                    }
                 };
-                reader.readAsDataURL(file);
+
+                if (esVideo) {
+                    // El audio se extrae al pulsar "Guardar Música"
+                    musicaTemporal = { file, nombre: file.name, esVideo: true };
+                    document.getElementById('musicaNombre').textContent = `Nuevo video: ${file.name} (elige la parte que quieres y pulsa "Guardar Música")`;
+                } else {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        musicaTemporal = { dataUrl: reader.result, nombre: file.name, esVideo: false };
+                        document.getElementById('musicaNombre').textContent = `Nueva canción: ${file.name} (pulsa "Guardar Música")`;
+                    };
+                    reader.readAsDataURL(file);
+                }
             });
         }
 
@@ -1569,19 +1743,31 @@
                     partes: musicaConfig.partes || 0
                 };
 
+                let dataFinal = null;
                 if (musicaTemporal) {
+                    if (musicaTemporal.esVideo) {
+                        estado.textContent = '⏳ Extrayendo y cortando el audio del video...';
+                        const cortar = modo === 'fragmento';
+                        dataFinal = await extraerAudioDeVideo(musicaTemporal.file, cortar ? inicio : 0, cortar ? fin : 0);
+                        // El audio ya quedó recortado, así que se reproduce completo en bucle
+                        nueva.modo = 'completa';
+                        nueva.inicio = 0;
+                        nueva.fin = 0;
+                    } else {
+                        dataFinal = musicaTemporal.dataUrl;
+                    }
+
                     estado.textContent = '⏳ Subiendo música, espera un momento...';
                     const viejos = await musicaPartesRef.get();
                     const batch = db.batch();
                     viejos.forEach(d => batch.delete(d.ref));
                     await batch.commit();
 
-                    const data = musicaTemporal.dataUrl;
-                    const total = Math.ceil(data.length / MUSICA_CHUNK);
+                    const total = Math.ceil(dataFinal.length / MUSICA_CHUNK);
                     for (let i = 0; i < total; i++) {
                         await musicaPartesRef.doc('p' + String(i).padStart(3, '0')).set({
                             idx: i,
-                            data: data.slice(i * MUSICA_CHUNK, (i + 1) * MUSICA_CHUNK)
+                            data: dataFinal.slice(i * MUSICA_CHUNK, (i + 1) * MUSICA_CHUNK)
                         });
                         estado.textContent = `⏳ Subiendo música... ${Math.round(((i + 1) / total) * 100)}%`;
                     }
@@ -1592,7 +1778,7 @@
                 await musicaRef.set(nueva);
                 musicaConfig = nueva;
                 if (musicaTemporal) {
-                    musicaBlobUrl = await dataUrlABlobUrl(musicaTemporal.dataUrl);
+                    musicaBlobUrl = await dataUrlABlobUrl(dataFinal);
                     musicaTemporal = null;
                     document.getElementById('musicaArchivo').value = '';
                 }
@@ -1602,7 +1788,7 @@
                 alert('✅ Música guardada correctamente.');
             } catch (e) {
                 console.error(e);
-                estado.textContent = '❌ Error al guardar la música.';
+                estado.textContent = '❌ ' + (e.message || 'Error al guardar la música.');
                 alert('❌ Error al guardar la música: ' + e.message);
             }
         }
